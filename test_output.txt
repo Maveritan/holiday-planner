@@ -1,0 +1,1517 @@
+
+> @figma/my-make-file@0.0.1 test
+> vitest --run
+
+
+[1m[46m RUN [49m[22m [36mv4.1.0 [39m[90m/Users/lilithlarose/Holiday Planning Tool[39m
+
+ [32m✓[39m src/app/components/DataManagement.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 145[2mms[22m[39m
+ [32m✓[39m src/app/components/ActivityNotes.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 124[2mms[22m[39m
+ [32m✓[39m src/app/views/CalendarViewContiguity.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 164[2mms[22m[39m
+ [32m✓[39m src/app/views/GhostCards.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 179[2mms[22m[39m
+ [32m✓[39m src/app/views/TimelineViewOverlap.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 187[2mms[22m[39m
+ [32m✓[39m src/app/views/TimelineOrdering.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 208[2mms[22m[39m
+ [32m✓[39m src/app/components/ActivityPool.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 239[2mms[22m[39m
+ [32m✓[39m src/app/views/CalendarView.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 294[2mms[22m[39m
+ [32m✓[39m src/app/views/TimelineView.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 432[2mms[22m[39m
+ [32m✓[39m src/app/views/ItineraryView.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m src/app/context/HolidayContext.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [31m❯[39m src/app/views/TimelineNotes.test.tsx [2m([22m[2m1 test[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1064[2mms[22m[39m
+[31m     [31m×[31m should display notes with markdown in TimelineView[39m[33m 1062[2mms[22m[39m
+ [31m❯[39m src/app/components/ActivityCard.test.tsx [2m([22m[2m7 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[33m 4275[2mms[22m[39m
+[31m       [31m×[31m should increase duration when resized and persist the change[39m[33m 1059[2mms[22m[39m
+[31m       [31m×[31m should maintain duration even when other activities are added[39m[33m 1029[2mms[22m[39m
+[31m       [31m×[31m should allow editing activity name via the category icon[39m[33m 1031[2mms[22m[39m
+[31m       [31m×[31m should open the edit dialog on double click[39m[33m 1029[2mms[22m[39m
+         [32m✓[39m should apply rounded-t-none and rounded-b-none to spanning segments correctly[32m 33[2mms[22m[39m
+       [32m✓[39m should handle activity unassignment[32m 61[2mms[22m[39m
+       [32m✓[39m should update name correctly via Edit Dialog[32m 31[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 5 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/app/components/ActivityCard.test.tsx[2m > [22mActivityCard[2m > [22mResizing and Basic Updates[2m > [22mshould increase duration when resized and persist the change
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Test Resize Activity. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/components/ActivityCard.test.tsx:[2m103:39[22m[39m
+    [90m101|[39m
+    [90m102|[39m     [90m// 1. Find the activity card[39m
+    [90m103|[39m     const activityCard = await screen.findByText('Test Resize Activity…
+    [90m   |[39m                                       [31m^[39m
+    [90m104|[39m     [34mexpect[39m(activityCard)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m105|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/components/ActivityCard.test.tsx[2m > [22mActivityCard[2m > [22mResizing and Basic Updates[2m > [22mshould maintain duration even when other activities are added
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Test Resize Activity. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/components/ActivityCard.test.tsx:[2m156:18[22m[39m
+    [90m154|[39m     )[33m;[39m
+    [90m155|[39m
+    [90m156|[39m     [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Test Resize Activity'[39m)[33m;[39m
+    [90m   |[39m                  [31m^[39m
+    [90m157|[39m     [35mconst[39m resizeTrigger [33m=[39m screen[33m.[39m[34mgetByTestId[39m([32m'resize-trigger'[39m)[33m;[39m
+    [90m158|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/components/ActivityCard.test.tsx[2m > [22mActivityCard[2m > [22mResizing and Basic Updates[2m > [22mshould allow editing activity name via the category icon
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the title: Edit activity.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/components/ActivityCard.test.tsx:[2m187:37[22m[39m
+    [90m185|[39m
+    [90m186|[39m     // 1. Find the category icon button (it has a title "Edit activity…
+    [90m187|[39m     [35mconst[39m editButton [33m=[39m [35mawait[39m screen[33m.[39m[34mfindByTitle[39m([32m'Edit activity'[39m)[33m;[39m
+    [90m   |[39m                                     [31m^[39m
+    [90m188|[39m     [34mexpect[39m(editButton)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m189|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/components/ActivityCard.test.tsx[2m > [22mActivityCard[2m > [22mResizing and Basic Updates[2m > [22mshould open the edit dialog on double click
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Test Resize Activity. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/components/ActivityCard.test.tsx:[2m221:39[22m[39m
+    [90m219|[39m
+    [90m220|[39m     [90m// 1. Find the activity card[39m
+    [90m221|[39m     const activityCard = await screen.findByText('Test Resize Activity…
+    [90m   |[39m                                       [31m^[39m
+    [90m222|[39m     [34mexpect[39m(activityCard)[33m.[39m[34mtoBeDefined[39m()[33m;[39m
+    [90m223|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/views/TimelineNotes.test.tsx[2m > [22mTimelineView Notes[2m > [22mshould display notes with markdown in TimelineView
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element with the text: Test Activity. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"h-full overflow-auto bg-gray-50"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"max-w-6xl mx-auto p-6"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"grid gap-x-0 relative"[39m
+          [33mstyle[39m=[32m"grid-template-columns: 100px 120px 1fr; grid-template-rows: repeat(21, minmax(100px, auto));"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 1 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mMon[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m23[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 1; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mAfternoon[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 2; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mNight[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-400 border-b-4"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"relative z-10 transition-colors "[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 1 / -1; min-height: 100px;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"z-20 flex flex-col pointer-events-none"[39m
+            [33mstyle[39m=[32m"grid-row: 3; grid-column: 3; align-self: stretch;"[39m
+          [36m/>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400"[39m
+            [33mstyle[39m=[32m"grid-row: 4 / span 3; grid-column: 1; min-height: 300px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"text-right whitespace-nowrap"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-sm font-bold text-blue-600 uppercase tracking-wider"[39m
+              [36m>[39m
+                [0mTue[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-lg font-black text-gray-900 leading-none"[39m
+              [36m>[39m
+                [0m24[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"text-xs font-medium text-gray-500 uppercase"[39m
+              [36m>[39m
+                [0mMar[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-start justify-center z-10"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 2; min-height: 100px; padding-top: 12px;"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap"[39m
+            [36m>[39m
+              [0mMorning[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"border-b h-0 border-gray-200"[39m
+            [33mstyle[39m=[32m"grid-row: 4; grid-column: 1 / -1; pointer-events: none; align-self: end; position: relative; z-index: 5;"...
+[90m [2m❯[22m waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m86:33[22m[39m
+[36m [2m❯[22m src/app/views/TimelineNotes.test.tsx:[2m81:39[22m[39m
+    [90m 79|[39m
+    [90m 80|[39m     [90m// Wait for activity to be assigned and rendered[39m
+    [90m 81|[39m     [35mconst[39m activityName [33m=[39m [35mawait[39m screen[33m.[39m[34mfindByText[39m([32m'Test Activity'[39m)[33m;[39m
+    [90m   |[39m                                       [31m^[39m
+    [90m 82|[39m     [34mexpect[39m(activityName)[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m 83|[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m11 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m59 passed[39m[22m[90m (64)[39m
+[2m   Start at [22m 18:38:23
+[2m   Duration [22m 5.78s[2m (transform 893ms, setup 936ms, import 4.17s, tests 7.38s, environment 9.95s)[22m
+

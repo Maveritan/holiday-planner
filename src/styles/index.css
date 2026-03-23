@@ -1,0 +1,38 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Date Picker Styles */
+.holiday-planner-calendar {
+  --rdp-accent-color: #3b82f6;
+  --rdp-background-color: #dbeafe;
+}
+
+.holiday-planner-calendar .rdp-day_button:hover:not([disabled]) {
+  background-color: #dbeafe;
+}
+
+.holiday-planner-calendar .rdp-day_button[aria-selected="true"] {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.holiday-planner-calendar .rdp-day_button[aria-selected="true"]:hover {
+  background-color: #2563eb;
+}
+
+.holiday-planner-calendar .rdp-month_caption {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.holiday-planner-calendar .rdp-weekday {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.holiday-planner-calendar .rdp-day_button {
+  border-radius: 0.5rem;
+}
