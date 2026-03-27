@@ -4,6 +4,7 @@ import { TimeSlotDropZone } from '../components/TimeSlotDropZone';
 import { ActivityCard } from '../components/ActivityCard';
 import { TimeSlot } from '../types';
 import { useDrop } from 'react-dnd';
+import { useIsMobile } from '../components/ui/use-mobile';
 
 const TIME_SLOTS: TimeSlot[] = ['morning', 'afternoon', 'night'];
 
@@ -58,6 +59,7 @@ function CalendarPositionedDropZone({ date, slot, index, moveActivity, reorderAs
 
 export function CalendarView() {
   const { dateRange, getActivitiesForSlot, updateActivity, moveActivity, reorderAssignedActivities, categories } = useHoliday();
+  const isMobile = useIsMobile();
 
   const getDatesInRange = () => {
     const dates: string[] = [];
@@ -75,6 +77,45 @@ export function CalendarView() {
 
   const dates = getDatesInRange();
   
+  if (isMobile) {
+    return (
+      <div className="flex-1 overflow-y-auto bg-gray-50">
+        {dates.map((dateStr) => {
+          const date = new Date(dateStr);
+          return (
+            <div key={dateStr} className="p-4 pt-0 space-y-3">
+              <div className="sticky top-0 z-20 bg-gray-50/95 backdrop-blur-sm py-2 px-4 -mx-4 flex items-baseline gap-2 border-b border-gray-200">
+                <span className="text-xl font-bold text-gray-900">
+                  {date.toLocaleDateString('en-US', { day: 'numeric' })}
+                </span>
+                <span className="text-sm font-medium text-blue-600 uppercase tracking-wider">
+                  {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                </span>
+                <span className="text-xs text-gray-500 uppercase">
+                  {date.toLocaleDateString('en-US', { month: 'short' })}
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                {TIME_SLOTS.map((slot) => (
+                  <div key={slot} className="space-y-1">
+                    <div className="text-[10px] font-bold text-gray-400 uppercase ml-1">
+                      {slot}
+                    </div>
+                    <TimeSlotDropZone
+                      date={dateStr}
+                      slot={slot}
+                      className="min-h-[60px] bg-white shadow-sm border-gray-100"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   // Group dates into weeks, ensuring the first column is always Sunday
   const weeks: (string | null)[][] = [];
   if (dates.length > 0) {

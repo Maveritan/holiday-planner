@@ -3,11 +3,15 @@ import { Outlet, NavLink } from 'react-router';
 import { useAuth0 } from '@auth0/auth0-react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import { ActivityPool } from './ActivityPool';
 import { DateRangePicker } from './DateRangePicker';
 import { SettingsDialog } from './SettingsDialog';
 import { AuthNav } from './AuthNav';
-import { LayoutGrid, Calendar, Clock, FileText, Loader2 } from 'lucide-react';
+import { LayoutGrid, Calendar, Clock, FileText, Loader2, Menu } from 'lucide-react';
+import { useIsMobile } from './ui/use-mobile';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from './ui/sheet';
+import { Button } from './ui/button';
 
 const NAV_ITEMS = [
   { path: '/calendar', label: 'Calendar', icon: Calendar },
@@ -18,6 +22,8 @@ const NAV_ITEMS = [
 export function Layout() {
   const { isLoading, error } = useAuth0();
   const [showAnyway, setShowAnyway] = React.useState(false);
+  const isMobile = useIsMobile();
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (isLoading) {
@@ -59,18 +65,74 @@ export function Layout() {
     );
   }
 
+  const SidebarContent = () => (
+    <>
+      {isMobile && (
+        <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50/50">
+          <AuthNav />
+          <SettingsDialog />
+        </div>
+      )}
+      <nav className="p-4 border-b border-gray-200 space-y-1">
+        {NAV_ITEMS.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            onClick={() => setIsDrawerOpen(false)}
+            className={({ isActive }) => `
+              flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors
+              ${isActive 
+                ? 'bg-blue-50 text-blue-700' 
+                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}
+            `}
+          >
+            <item.icon className="w-4 h-4" />
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {!isMobile && <ActivityPool />}
+      </div>
+    </>
+  );
+
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider 
+      backend={isMobile ? TouchBackend : HTML5Backend}
+      options={isMobile ? { enableMouseEvents: true, delayTouchStart: 150 } : undefined}
+    >
       <div className="h-screen flex flex-col bg-gray-100">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-6 py-4">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold text-gray-900">Holiday Planner</h1>
-              <div className="flex items-center gap-4">
+        <header className="bg-white shadow-sm border-b border-gray-200 shrink-0">
+          <div className="px-4 py-3 md:px-6 md:py-4">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                {isMobile && (
+                  <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" size="icon" className="-ml-2">
+                        <Menu className="h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="p-0 w-80 flex flex-col">
+                      <SheetHeader className="p-4 border-b">
+                        <SheetTitle>Holiday Planner</SheetTitle>
+                      </SheetHeader>
+                      <SidebarContent />
+                    </SheetContent>
+                  </Sheet>
+                )}
+                <h1 className="text-lg md:text-2xl font-bold text-gray-900 truncate hidden md:block">Holiday Planner</h1>
+              </div>
+              <div className="flex items-center gap-1 md:gap-4">
                 <DateRangePicker />
-                <SettingsDialog />
-                <AuthNav />
+                {!isMobile && (
+                  <>
+                    <SettingsDialog />
+                    <AuthNav />
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -78,35 +140,25 @@ export function Layout() {
 
         {/* Main Content */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Sidebar */}
-          <aside className="w-80 bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden">
-            <nav className="p-4 border-b border-gray-200 space-y-1">
-              {NAV_ITEMS.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) => `
-                    flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                    ${isActive 
-                      ? 'bg-blue-50 text-blue-700' 
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}
-                  `}
-                >
-                  <item.icon className="w-4 h-4" />
-                  {item.label}
-                </NavLink>
-              ))}
-            </nav>
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              <ActivityPool />
-            </div>
-          </aside>
+          {/* Sidebar - Desktop Only */}
+          {!isMobile && (
+            <aside className="w-80 bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden">
+              <SidebarContent />
+            </aside>
+          )}
 
           {/* View Content */}
-          <main className="flex-1 overflow-hidden">
+          <main className={`flex-1 overflow-hidden flex flex-col ${isMobile ? 'pb-32' : ''}`}>
             <Outlet />
           </main>
         </div>
+
+        {/* Mobile Activity Pool */}
+        {isMobile && (
+          <div className="fixed bottom-0 left-0 right-0 h-32 z-40">
+            <ActivityPool />
+          </div>
+        )}
       </div>
     </DndProvider>
   );

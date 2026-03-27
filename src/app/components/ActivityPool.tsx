@@ -3,12 +3,14 @@ import { useHoliday } from '../context/HolidayContext';
 import { ActivityCard } from './ActivityCard';
 import { Plus } from 'lucide-react';
 import { useDrop } from 'react-dnd';
+import { useIsMobile } from './ui/use-mobile';
 
 export function ActivityPool() {
   const { getUnassignedActivities, categories, addActivity, deleteActivity, reorderActivities, moveActivity } = useHoliday();
   const [showForm, setShowForm] = useState(false);
   const [newActivityName, setNewActivityName] = useState('');
   const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0]?.id || '');
+  const isMobile = useIsMobile();
 
   const unassignedActivities = getUnassignedActivities();
 
@@ -55,21 +57,21 @@ export function ActivityPool() {
   return (
     <div 
       ref={dropContainer}
-      className={`bg-white rounded-lg shadow-lg p-4 h-full flex flex-col transition-colors ${isOverContainer ? 'bg-blue-50' : ''}`}
+      className={`bg-white md:rounded-lg shadow-lg p-3 md:p-4 h-full flex flex-col transition-colors ${isOverContainer ? 'bg-blue-50' : ''} ${isMobile ? 'border-t border-gray-200' : ''}`}
     >
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="font-semibold text-lg">Activity Pool</h2>
+      <div className={`flex items-center justify-between mb-2 md:mb-4 ${isMobile ? 'px-1' : ''}`}>
+        <h2 className="font-semibold text-sm md:text-lg">Activity Pool</h2>
         <button
           onClick={() => setShowForm(!showForm)}
           aria-label="Add activity"
-          className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+          className="p-1.5 md:p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4 md:w-5 h-5" />
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-4 space-y-2 p-3 bg-gray-50 rounded-lg">
+        <form onSubmit={handleSubmit} className={`mb-4 space-y-2 p-3 bg-gray-50 rounded-lg ${isMobile ? 'fixed bottom-20 left-4 right-4 z-50 shadow-xl border border-gray-200' : ''}`}>
           <input
             type="text"
             value={newActivityName}
@@ -105,20 +107,21 @@ export function ActivityPool() {
         </form>
       )}
 
-      <div className="flex-1 overflow-y-auto space-y-2">
+      <div className={`flex-1 overflow-y-auto space-y-2 ${isMobile ? 'flex flex-row space-y-0 space-x-2 overflow-x-auto pb-2 scrollbar-hide' : ''}`}>
         {unassignedActivities.length === 0 ? (
-          <div className="text-center text-gray-400 py-8">
+          <div className={`text-center text-gray-400 py-4 md:py-8 ${isMobile ? 'w-full text-xs' : ''}`}>
             No unassigned activities.<br />Click + to add one.
           </div>
         ) : (
           unassignedActivities.map((activity) => (
-            <ActivityPoolItem
-              key={activity.id}
-              activity={activity}
-              category={categories.find(c => c.id === activity.categoryId)!}
-              onDelete={() => deleteActivity(activity.id)}
-              onReorder={handleReorder}
-            />
+            <div key={activity.id} className={isMobile ? 'flex-shrink-0 w-48' : ''}>
+              <ActivityPoolItem
+                activity={activity}
+                category={categories.find(c => c.id === activity.categoryId)!}
+                onDelete={() => deleteActivity(activity.id)}
+                onReorder={handleReorder}
+              />
+            </div>
           ))
         )}
       </div>
@@ -134,6 +137,7 @@ interface ActivityPoolItemProps {
 }
 
 function ActivityPoolItem({ activity, category, onDelete, onReorder }: ActivityPoolItemProps) {
+  const isMobile = useIsMobile();
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'activity',
     drop: (item: { activityId: string }) => {
@@ -147,7 +151,7 @@ function ActivityPoolItem({ activity, category, onDelete, onReorder }: ActivityP
   return (
     <div 
       ref={drop}
-      className={`transition-all ${isOver ? 'border-t-4 border-blue-500 pt-2' : ''}`}
+      className={`transition-all ${isOver ? (isMobile ? 'border-l-4 border-blue-500 pl-2' : 'border-t-4 border-blue-500 pt-2') : ''}`}
     >
       <ActivityCard
         activity={activity}

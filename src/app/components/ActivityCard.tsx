@@ -100,8 +100,8 @@ export function ActivityCard({
       className={`
         relative p-2 min-h-[56px] h-full
         shadow-sm border-2 transition-all
-        ${isDragging ? 'opacity-50' : 'opacity-100'}
-        ${isDraggable ? 'cursor-move' : ''}
+        ${isDragging ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}
+        ${isDraggable ? 'cursor-move touch-none active:scale-105 active:shadow-lg active:z-50' : ''}
         ${isContinuing ? (resizeDirection === 'vertical' ? 'rounded-t-none border-t-0' : 'rounded-l-none border-l-0') : (resizeDirection === 'vertical' ? 'rounded-t-lg' : 'rounded-l-lg')}
         ${willContinue ? (resizeDirection === 'vertical' ? 'rounded-b-none border-b-0' : 'rounded-r-none border-r-0') : (resizeDirection === 'vertical' ? 'rounded-b-lg' : 'rounded-r-lg')}
         ${className}

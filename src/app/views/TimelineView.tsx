@@ -3,6 +3,7 @@ import { useDrop } from 'react-dnd';
 import { useHoliday } from '../context/HolidayContext';
 import { ActivityCard } from '../components/ActivityCard';
 import { TimeSlot } from '../types';
+import { useIsMobile } from '../components/ui/use-mobile';
 
 const TIME_SLOT_LABELS: Record<TimeSlot, string> = {
   morning: 'Morning',
@@ -11,9 +12,11 @@ const TIME_SLOT_LABELS: Record<TimeSlot, string> = {
 };
 
 const SLOT_HEIGHT = 100;
+const MOBILE_SLOT_HEIGHT = 80;
 
 export function TimelineView() {
   const { dateRange, categories, moveActivity, reorderAssignedActivities, updateActivity, activities, getActivitiesForSlot } = useHoliday();
+  const isMobile = useIsMobile();
 
   const getDatesInRange = () => {
     const dates: string[] = [];
@@ -71,18 +74,19 @@ export function TimelineView() {
 
   return (
     <div className="h-full overflow-auto bg-gray-50">
-      <div className="max-w-6xl mx-auto p-6">
+      <div className={`mx-auto ${isMobile ? 'px-2 pb-2' : 'p-6 max-w-6xl'}`}>
         <div 
           className="grid gap-x-0 relative"
           style={{ 
-            gridTemplateColumns: '100px 120px 1fr',
-            gridTemplateRows: `repeat(${rows.length}, minmax(${SLOT_HEIGHT}px, auto))`
+            gridTemplateColumns: isMobile ? '50px 70px 1fr' : '100px 120px 1fr',
+            gridTemplateRows: `repeat(${rows.length}, minmax(${isMobile ? MOBILE_SLOT_HEIGHT : SLOT_HEIGHT}px, auto))`
           }}
         >
           {/* Grid background and labels */}
           {rows.map((row, rowIndex) => {
             const isMorning = row.slot === 'morning';
             const slotActivities = getActivitiesForSlot(row.date, row.slot);
+            const currentSlotHeight = isMobile ? MOBILE_SLOT_HEIGHT : SLOT_HEIGHT;
 
             return (
               <React.Fragment key={row.id}>
@@ -90,35 +94,33 @@ export function TimelineView() {
                 {isMorning && (
                   <div 
                     key={`date-${row.id}`}
-                    className={`flex items-start justify-end pr-4 z-10 border-b-4 border-gray-400`}
+                    className={`flex items-start justify-end pr-2 md:pr-4 z-10 border-b-4 border-gray-400 sticky top-0 bg-gray-50 pt-3`}
                     style={{ 
                       gridRow: `${rowIndex + 1} / span 3`, 
                       gridColumn: 1,
-                      minHeight: SLOT_HEIGHT * 3,
-                      paddingTop: '12px'
+                      minHeight: currentSlotHeight * 3,
                     }}
                   >
                     <div className="text-right whitespace-nowrap">
-                      <div className="text-sm font-bold text-blue-600 uppercase tracking-wider">
+                      <div className="text-[10px] md:text-sm font-bold text-blue-600 uppercase tracking-wider">
                         {new Date(row.date).toLocaleDateString('en-US', { weekday: 'short' })}
                       </div>
-                      <div className="text-lg font-black text-gray-900 leading-none">
+                      <div className="text-sm md:text-lg font-black text-gray-900 leading-none">
                         {new Date(row.date).toLocaleDateString('en-US', { day: 'numeric' })}
                       </div>
-                      <div className="text-xs font-medium text-gray-500 uppercase">
+                      <div className="text-[10px] md:text-xs font-medium text-gray-500 uppercase">
                         {new Date(row.date).toLocaleDateString('en-US', { month: 'short' })}
                       </div>
                     </div>
                   </div>
                 )}
 
-                {/* Time slot label - No background/square */}
                 <div 
                   key={`time-${row.id}`}
-                  className={`flex items-start justify-center z-10`}
-                  style={{ gridRow: rowIndex + 1, gridColumn: 2, minHeight: SLOT_HEIGHT, paddingTop: '12px' }}
+                  className={`flex items-start justify-center z-10 sticky top-0 md:relative bg-gray-50 md:bg-transparent pt-3`}
+                  style={{ gridRow: rowIndex + 1, gridColumn: 2, minHeight: currentSlotHeight }}
                 >
-                  <span className="text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap">
+                  <span className="text-[10px] md:text-xs font-semibold text-center leading-tight text-gray-500 uppercase tracking-tighter whitespace-nowrap">
                     {TIME_SLOT_LABELS[row.slot]}
                   </span>
                 </div>

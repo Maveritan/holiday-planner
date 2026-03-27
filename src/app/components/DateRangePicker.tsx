@@ -63,25 +63,26 @@ export function DateRangePicker() {
     <div className="relative" ref={popoverRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+        className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
       >
-        <CalendarIcon className="w-5 h-5 text-gray-600" />
-        <span className="font-medium">
+        <CalendarIcon className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
+        <span className="font-medium text-xs md:text-base whitespace-nowrap">
           {formatDate(dateRange.start)} - {formatDate(dateRange.end)}
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute top-full mt-2 left-0 z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-4">
+        <div className="fixed md:absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:top-full md:left-0 md:translate-x-0 md:translate-y-0 mt-2 z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-0 md:p-4">
           <DayPicker
             mode="range"
             selected={selectedRange}
             onSelect={handleSelect}
             numberOfMonths={1}
-            className="holiday-planner-calendar"
+            className="holiday-planner-calendar m-0"
           />
         </div>
       )}
+      {isOpen && <div className="fixed inset-0 bg-black/20 md:hidden z-40" onClick={() => setIsOpen(false)} />}
     </div>
   );
 }

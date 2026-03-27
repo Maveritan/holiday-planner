@@ -6,3 +6,4 @@ server/data/state.json
 /.junie/
 /.agents/
 /skills-lock.json
+/dist/
