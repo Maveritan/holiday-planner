@@ -54,9 +54,9 @@ export function Layout() {
               <p>Using self-signed certificates for HTTPS can sometimes block Auth0 callbacks.</p>
               <p className="mt-2">Try these steps:</p>
               <ul className="list-disc list-inside text-left mt-1 space-y-1">
-                <li>Open <a href="/socket.io/" target="_blank" className="underline font-bold">https://localhost:8080/socket.io/</a> and click "Proceed anyway" (This is crucial for the real-time sync to work)</li>
+                <li>Open <a href={window.location.origin + "/socket.io/"} target="_blank" className="underline font-bold">https://{window.location.host}/socket.io/</a> and click "Proceed anyway"</li>
                 <li>Refresh this page</li>
-                <li>Clear your browser cookies for localhost</li>
+                <li>Ensure your IP/hostname is allowed in Auth0 Dashboard</li>
               </ul>
             </div>
           )}

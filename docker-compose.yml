@@ -22,7 +22,7 @@ services:
         # Leave blank to use window.location.origin by default in the app
         - VITE_SOCKET_URL=
     ports:
-      - "8080:443"
+      - "8080:80"
     volumes:
       - ./certs:/etc/nginx/certs
     depends_on:

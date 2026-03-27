@@ -7,4 +7,5 @@ export const socket: Socket = io(SOCKET_URL, {
   autoConnect: true,
   rejectUnauthorized: !IS_PROD, // Required for self-signed certificates in dev
   transports: ['websocket', 'polling'], // Try websocket first, fallback to polling
+  secure: window.location.protocol === 'https:',
 });

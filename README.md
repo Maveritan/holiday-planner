@@ -26,7 +26,8 @@ Build an itinerary — quickly.
    ```
 
 5. **Access the App**:
-   Open your browser to `https://localhost:8080`.
+   - On the host machine: Open `https://localhost:8080`.
+   - On other devices: Open `https://<YOUR_HOST_IP>:8080` (Replace `<YOUR_HOST_IP>` with your computer's local IP address).
 
 ## SSL Setup
 
@@ -40,5 +41,7 @@ The application uses self-signed certificates for local development.
 
 2. **Accept Certificate in Browser**:
    Since these are self-signed, you will see a security warning.
-   - For the main app: Click "Advanced" -> "Proceed to localhost (unsafe)".
-   - For the backend (Socket.IO): Visit `https://localhost:8080/socket.io/` directly once, and click "Proceed to localhost (unsafe)". Then refresh the main app page.
+   - For the main app: Click "Advanced" -> "Proceed to localhost (unsafe)" or "Proceed to <IP> (unsafe)".
+   - For the backend (Socket.IO): Visit `https://<DOMAIN_OR_IP>:8080/socket.io/` directly once, and click "Proceed anyway". Then refresh the main app page.
+
+**Note for Other Devices**: When connecting from another device, your browser might be even stricter about self-signed certificates. You **must** visit the `/socket.io/` path on that device first to allow the connection.

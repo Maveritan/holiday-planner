@@ -1,5 +1,6 @@
 import express from 'express';
-import { createServer } from 'https';
+import { createServer as createHttpsServer } from 'https';
+import { createServer as createHttpServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import fs from 'fs';
@@ -15,26 +16,51 @@ const IS_PROD = APP_ENV === 'production';
 const DATA_FILE = path.join(__dirname, 'data', 'state.json');
 
 // SSL certificates
-const options = {
-  key: fs.readFileSync(path.join(__dirname, '..', 'certs', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '..', 'certs', 'cert.pem'))
-};
+const certPath = path.join(__dirname, '..', 'certs', 'cert.pem');
+const keyPath = path.join(__dirname, '..', 'certs', 'key.pem');
+const hasCerts = fs.existsSync(certPath) && fs.existsSync(keyPath);
+
+// In production on platforms like Railway, we usually want HTTP internally
+// as the platform handles SSL at the edge.
+const useHttps = !IS_PROD && hasCerts;
+
+const options = useHttps ? {
+  key: fs.readFileSync(keyPath),
+  cert: fs.readFileSync(certPath)
+} : {};
 
 const app = express();
 app.use(cors({
-  origin: IS_PROD ? false : '*', // Disable wildcard CORS in production
+  origin: (origin, callback) => {
+    // In production, allow the request if it's from the same domain or if origin is undefined (e.g. server-to-server)
+    // For Railway, we can be a bit more permissive or use an environment variable
+    if (!IS_PROD || !origin || origin.includes('railway.app') || origin.includes('localhost')) {
+      callback(null, true);
+      return;
+    }
+    callback(null, false);
+  },
   methods: ['GET', 'POST'],
   credentials: true
 }));
 
-const httpServer = createServer(options, app);
+const httpServer = useHttps 
+  ? createHttpsServer(options, app) 
+  : createHttpServer(app);
+
 const io = new Server(httpServer, {
   cors: {
-    origin: IS_PROD ? false : '*',
+    origin: (origin, callback) => {
+      if (!IS_PROD || !origin || origin.includes('railway.app') || origin.includes('localhost')) {
+        callback(null, true);
+        return;
+      }
+      callback(null, false);
+    },
     methods: ['GET', 'POST'],
     credentials: true
   },
-  allowEIO3: !IS_PROD, // Compatibility only for development
+  allowEIO3: !IS_PROD,
   transports: ['websocket', 'polling']
 });
 
@@ -111,8 +137,9 @@ io.on('connection', (socket) => {
 });
 
 httpServer.listen(PORT, () => {
-  console.log(`Server running in ${APP_ENV} mode on https://localhost:${PORT}`);
-  if (IS_PROD) {
+  const protocol = useHttps ? 'https' : 'http';
+  console.log(`Server running in ${APP_ENV} mode on ${protocol}://localhost:${PORT}`);
+  if (IS_PROD && useHttps) {
     console.warn('WARNING: Running in production mode with self-signed certificates. Ensure these are replaced with trusted certificates for actual production use.');
   }
 });
