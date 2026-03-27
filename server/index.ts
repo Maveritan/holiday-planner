@@ -6,6 +6,7 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import * as Y from 'yjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3001;
 const APP_ENV = process.env.APP_ENV || 'development';
 const IS_PROD = APP_ENV === 'production';
 const DATA_FILE = path.join(__dirname, 'data', 'state.json');
+const YDOC_FILE = path.join(__dirname, 'data', 'state.ydoc');
 
 // SSL certificates
 const certPath = path.join(__dirname, '..', 'certs', 'cert.pem');
@@ -99,36 +101,89 @@ let state = {
   dateRange: getDefaultDateRange()
 };
 
+// Initialize Yjs document
+const ydoc = new Y.Doc();
+const ymap = ydoc.getMap('holiday-data');
+
+// Function to populate Yjs from JSON state
+const populateYjsFromState = (s: any) => {
+  ydoc.transact(() => {
+    const yactivities = new Y.Array();
+    s.activities.forEach((a: any) => {
+      const ya = new Y.Map();
+      Object.entries(a).forEach(([k, v]) => ya.set(k, v));
+      yactivities.push([ya]);
+    });
+    ymap.set('activities', yactivities);
+
+    const ycategories = new Y.Array();
+    s.categories.forEach((c: any) => {
+      const yc = new Y.Map();
+      Object.entries(c).forEach(([k, v]) => yc.set(k, v));
+      ycategories.push([yc]);
+    });
+    ymap.set('categories', ycategories);
+
+    const ydateRange = new Y.Map();
+    Object.entries(s.dateRange).forEach(([k, v]) => ydateRange.set(k, v));
+    ymap.set('dateRange', ydateRange);
+  });
+};
+
 // Load state from file
-if (fs.existsSync(DATA_FILE)) {
+if (fs.existsSync(YDOC_FILE)) {
+  try {
+    const update = fs.readFileSync(YDOC_FILE);
+    Y.applyUpdate(ydoc, update);
+    console.log('State loaded from YDOC file');
+  } catch (err) {
+    console.error('Error loading YDOC state:', err);
+  }
+} else if (fs.existsSync(DATA_FILE)) {
   try {
     const data = fs.readFileSync(DATA_FILE, 'utf-8');
     state = JSON.parse(data);
-    console.log('State loaded from file');
+    populateYjsFromState(state);
+    console.log('State loaded from JSON file and migrated to Yjs');
   } catch (err) {
     console.error('Error loading state:', err);
+    populateYjsFromState(state);
   }
+} else {
+  populateYjsFromState(state);
 }
 
 const saveState = () => {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(state, null, 2));
+    const update = Y.encodeStateAsUpdate(ydoc);
+    fs.writeFileSync(YDOC_FILE, Buffer.from(update));
+    // Also save JSON for backward compatibility/readability if needed
+    fs.writeFileSync(DATA_FILE, JSON.stringify(ydoc.getMap('holiday-data').toJSON(), null, 2));
   } catch (err) {
     console.error('Error saving state:', err);
   }
 };
 
+// Watch for changes in ydoc to save
+ydoc.on('update', () => {
+  saveState();
+});
+
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
 
-  // Send current state to newly connected client
-  socket.emit('state-update', state);
+  // Send current state to newly connected client as a Yjs update
+  const stateUpdate = Y.encodeStateAsUpdate(ydoc);
+  socket.emit('yjs-update', stateUpdate);
 
-  socket.on('update-state', (newState) => {
-    state = newState;
-    saveState();
-    // Broadcast to everyone else
-    socket.broadcast.emit('state-update', state);
+  socket.on('yjs-update', (update: Uint8Array) => {
+    try {
+      Y.applyUpdate(ydoc, new Uint8Array(update), socket);
+      // Broadcast to everyone else
+      socket.broadcast.emit('yjs-update', update);
+    } catch (err) {
+      console.error('Error applying Yjs update:', err);
+    }
   });
 
   socket.on('disconnect', () => {

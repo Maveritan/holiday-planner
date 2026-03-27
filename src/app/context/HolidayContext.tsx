@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode, useRe
 import { Activity, Category, DateRange, HolidayData, TimeSlot } from '../types';
 import { socket } from '../services/socket';
 import { toast } from 'sonner';
+import * as Y from 'yjs';
 import { 
   Plane, 
   ShoppingBag, 
@@ -12,6 +13,9 @@ import {
   MapPin, 
   Sparkles 
 } from 'lucide-react';
+
+const ydoc = new Y.Doc();
+const ymap = ydoc.getMap('holiday-data');
 
 const DEFAULT_CATEGORIES: Category[] = [
   { id: '1', name: 'Transit', color: '#3B82F6', icon: 'Plane' },
@@ -82,22 +86,21 @@ interface HolidayContextType {
 
 const HolidayContext = createContext<HolidayContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'holiday-planner-data';
-
 export function HolidayProvider({ children }: { children: ReactNode }) {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
-  const [dateRange, setDateRange] = useState<DateRange>(getDefaultDateRange());
-  const isInternalUpdate = useRef(false);
+  const [localActivities, setLocalActivities] = useState<Activity[]>([]);
+  const [localCategories, setLocalCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
+  const [localDateRange, setLocalDateRange] = useState<DateRange>(getDefaultDateRange());
   const isInitialSyncDone = useRef(false);
 
-  // Sync with WebSocket
+  // Sync with WebSocket and Yjs
   useEffect(() => {
     console.log('Socket: Initializing connection listeners');
     
     const onConnect = () => {
       console.log('Socket: Connected successfully');
       toast.success('Connected to backend');
+      // On reconnect, we might want to sync again if we missed updates
+      // The server will send 'yjs-update' on connection anyway
     };
 
     const onConnectError = (error: any) => {
@@ -112,22 +115,50 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    const handleStateUpdate = (newState: HolidayData) => {
-      console.log('Socket: Received state update', newState);
-      isInternalUpdate.current = true;
-      isInitialSyncDone.current = true;
-      setActivities(newState.activities || []);
-      setCategories(newState.categories || DEFAULT_CATEGORIES);
-      setDateRange(newState.dateRange || getDefaultDateRange());
-      setTimeout(() => {
-        isInternalUpdate.current = false;
-      }, 0);
+    const handleYjsUpdate = (update: ArrayBuffer) => {
+      console.log('Socket: Received Yjs update');
+      try {
+        Y.applyUpdate(ydoc, new Uint8Array(update), socket);
+        isInitialSyncDone.current = true;
+      } catch (err) {
+        console.error('Error applying Yjs update from server:', err);
+      }
     };
 
     socket.on('connect', onConnect);
     socket.on('connect_error', onConnectError);
     socket.on('disconnect', onDisconnect);
-    socket.on('state-update', handleStateUpdate);
+    socket.on('yjs-update', handleYjsUpdate);
+
+    // Initial Yjs sync: when we update the local ydoc, broadcast it
+    const handleLocalYjsUpdate = (update: Uint8Array, origin: any) => {
+      if (origin !== socket) {
+        console.log('Socket: Broadcasting local Yjs update');
+        socket.emit('yjs-update', update);
+      }
+    };
+    ydoc.on('update', handleLocalYjsUpdate);
+
+    // Sync React state with Yjs
+    const syncReactState = () => {
+      const data = ymap.toJSON() as any;
+      console.log('Syncing React state from Yjs:', data);
+      
+      // We must be careful not to trigger excessive re-renders
+      // but ymap.toJSON() is a fresh object every time.
+      if (data.activities) setLocalActivities(data.activities);
+      if (data.categories) setLocalCategories(data.categories);
+      if (data.dateRange) setLocalDateRange(data.dateRange);
+    };
+
+    const observer = () => {
+      syncReactState();
+    };
+
+    ymap.observeDeep(observer);
+
+    // Initial sync from what we have in ymap
+    syncReactState();
 
     // If already connected when effect runs
     if (socket.connected) {
@@ -138,101 +169,151 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       socket.off('connect', onConnect);
       socket.off('connect_error', onConnectError);
       socket.off('disconnect', onDisconnect);
-      socket.off('state-update', handleStateUpdate);
+      socket.off('yjs-update', handleYjsUpdate);
+      ydoc.off('update', handleLocalYjsUpdate);
+      ymap.unobserveDeep(observer);
     };
   }, []);
 
-  // Broadcast changes
-  useEffect(() => {
-    if (isInternalUpdate.current || !isInitialSyncDone.current) {
-      console.log('Socket: Skipping broadcast (internal update or initial sync not done)');
-      return;
-    }
-
-    const data: HolidayData = {
-      activities,
-      categories,
-      dateRange,
-    };
-    
-    console.log('Socket: Broadcasting state update', data);
-    socket.emit('update-state', data);
-  }, [activities, categories, dateRange]);
-
   const importState = (data: HolidayData) => {
-    if (data.activities) setActivities(data.activities);
-    if (data.categories) setCategories(data.categories);
-    if (data.dateRange) setDateRange(data.dateRange);
+    ydoc.transact(() => {
+      const yactivities = new Y.Array();
+      data.activities.forEach(a => {
+        const ya = new Y.Map();
+        Object.entries(a).forEach(([k, v]) => ya.set(k, v));
+        yactivities.push([ya]);
+      });
+      ymap.set('activities', yactivities);
+
+      const ycategories = new Y.Array();
+      data.categories.forEach(c => {
+        const yc = new Y.Map();
+        Object.entries(c).forEach(([k, v]) => yc.set(k, v));
+        ycategories.push([yc]);
+      });
+      ymap.set('categories', ycategories);
+
+      const ydateRange = new Y.Map();
+      Object.entries(data.dateRange).forEach(([k, v]) => ydateRange.set(k, v));
+      ymap.set('dateRange', ydateRange);
+    });
   };
 
   const addActivity = (name: string, categoryId: string) => {
-    setActivities(prev => {
-      return [{
-        id: Math.random().toString(36).substr(2, 9) + Date.now().toString(),
-        name,
-        categoryId,
-        assignedDate: null,
-        slot: null,
-        duration: 1,
-        position: 0,
-        notes: '',
-      }, ...prev.map(a => ({
-        ...a,
-        position: (a.assignedDate === null || a.slot === null) ? (a.position || 0) + 1 : a.position
-      }))];
+    const id = Math.random().toString(36).substr(2, 9) + Date.now().toString();
+    const newActivity: Activity = {
+      id,
+      name,
+      categoryId,
+      assignedDate: null,
+      slot: null,
+      duration: 1,
+      position: 0,
+      notes: '',
+    };
+
+    ydoc.transact(() => {
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!yactivities) return;
+
+      // Update positions of other unassigned activities
+      yactivities.forEach(ya => {
+        if (ya.get('assignedDate') === null || ya.get('slot') === null) {
+          ya.set('position', (ya.get('position') || 0) + 1);
+        }
+      });
+
+      const ya = new Y.Map();
+      Object.entries(newActivity).forEach(([k, v]) => ya.set(k, v));
+      yactivities.insert(0, [ya]);
     });
   };
 
   const reorderActivities = (activityIds: string[]) => {
-    setActivities(prev => {
-      const activityMap = new Map(prev.map(a => [a.id, a]));
-      const newActivities = [...prev];
-      
+    ydoc.transact(() => {
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!yactivities) return;
+
       activityIds.forEach((id, index) => {
-        const activity = activityMap.get(id);
-        if (activity) {
-          const activityIndex = newActivities.findIndex(a => a.id === id);
-          if (activityIndex !== -1) {
-            newActivities[activityIndex] = { ...activity, position: index };
-          }
+        const ya = yactivities.toArray().find(a => a.get('id') === id);
+        if (ya) {
+          ya.set('position', index);
         }
       });
-      return newActivities;
     });
   };
 
   const updateActivity = (id: string, updates: Partial<Activity>) => {
-    setActivities(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
+    ydoc.transact(() => {
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!yactivities) return;
+
+      const ya = yactivities.toArray().find(a => a.get('id') === id);
+      if (ya) {
+        Object.entries(updates).forEach(([k, v]) => ya.set(k, v));
+      }
+    });
   };
 
   const deleteActivity = (id: string) => {
-    setActivities(prev => prev.filter(a => a.id !== id));
+    ydoc.transact(() => {
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!yactivities) return;
+
+      const index = yactivities.toArray().findIndex(a => a.get('id') === id);
+      if (index !== -1) {
+        yactivities.delete(index, 1);
+      }
+    });
   };
 
   const addCategory = (name: string, color: string, icon: string) => {
-    setCategories(prev => [...prev, {
-      id: Math.random().toString(36).substr(2, 9) + Date.now().toString(),
-      name,
-      color,
-      icon,
-    }]);
+    const id = Math.random().toString(36).substr(2, 9) + Date.now().toString();
+    const newCategory: Category = { id, name, color, icon };
+
+    ydoc.transact(() => {
+      const ycategories = ymap.get('categories') as Y.Array<Y.Map<any>>;
+      if (!ycategories) return;
+
+      const yc = new Y.Map();
+      Object.entries(newCategory).forEach(([k, v]) => yc.set(k, v));
+      ycategories.push([yc]);
+    });
   };
 
   const updateCategory = (id: string, updates: Partial<Category>) => {
-    setCategories(prev => prev.map(c => c.id === id ? { ...c, ...updates } : c));
+    ydoc.transact(() => {
+      const ycategories = ymap.get('categories') as Y.Array<Y.Map<any>>;
+      if (!ycategories) return;
+
+      const yc = ycategories.toArray().find(c => c.get('id') === id);
+      if (yc) {
+        Object.entries(updates).forEach(([k, v]) => yc.set(k, v));
+      }
+    });
   };
 
   const deleteCategory = (id: string) => {
-    setCategories(prev => prev.filter(c => c.id !== id));
-    // Reassign activities to first category
-    setActivities(prev => {
-      if (categories.length > 0) {
-        const firstCategoryId = categories.find(c => c.id !== id)?.id || categories[0].id;
-        return prev.map(a => 
-          a.categoryId === id ? { ...a, categoryId: firstCategoryId } : a
-        );
+    ydoc.transact(() => {
+      const ycategories = ymap.get('categories') as Y.Array<Y.Map<any>>;
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!ycategories || !yactivities) return;
+
+      const index = ycategories.toArray().findIndex(c => c.get('id') === id);
+      if (index !== -1) {
+        ycategories.delete(index, 1);
       }
-      return prev;
+
+      // Reassign activities to first category
+      const remainingCategories = ycategories.toArray();
+      if (remainingCategories.length > 0) {
+        const firstCategoryId = remainingCategories.find(c => c.get('id') !== id)?.get('id') || remainingCategories[0].get('id');
+        yactivities.forEach(ya => {
+          if (ya.get('categoryId') === id) {
+            ya.set('categoryId', firstCategoryId);
+          }
+        });
+      }
     });
   };
 
@@ -242,33 +323,37 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     slot: TimeSlot | null,
     position = 0
   ) => {
-    setActivities(prev => {
-      const activityToMove = prev.find(a => a.id === activityId);
-      if (!activityToMove) return prev;
+    ydoc.transact(() => {
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!yactivities) return;
+
+      const activityToMove = yactivities.toArray().find(a => a.get('id') === activityId);
+      if (!activityToMove) return;
 
       // Handle unassigning (moving back to pool)
       if (date === null || slot === null) {
-        return prev.map(a => {
-          if (a.id === activityId) {
-            return { ...a, assignedDate: null, slot: null, position: 0 };
+        yactivities.forEach(ya => {
+          if (ya.get('id') === activityId) {
+            ya.set('assignedDate', null);
+            ya.set('slot', null);
+            ya.set('position', 0);
+          } else if (ya.get('assignedDate') === null || ya.get('slot') === null) {
+            // Shift other unassigned activities
+            ya.set('position', (ya.get('position') || 0) + 1);
           }
-          // Shift other unassigned activities
-          if (a.assignedDate === null || a.slot === null) {
-            return { ...a, position: (a.position || 0) + 1 };
-          }
-          return a;
         });
+        return;
       }
 
       // Handle shifting in target slot
-      return prev.map(a => {
-        if (a.id === activityId) {
-          return { ...a, assignedDate: date, slot, position };
+      yactivities.forEach(ya => {
+        if (ya.get('id') === activityId) {
+          ya.set('assignedDate', date);
+          ya.set('slot', slot);
+          ya.set('position', position);
+        } else if (ya.get('assignedDate') === date && ya.get('slot') === slot && (ya.get('position') || 0) >= position) {
+          ya.set('position', (ya.get('position') || 0) + 1);
         }
-        if (date && slot && a.assignedDate === date && a.slot === slot && a.position >= position) {
-          return { ...a, position: a.position + 1 };
-        }
-        return a;
       });
     });
   };
@@ -278,14 +363,28 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     slot: TimeSlot,
     activityIds: string[]
   ) => {
-    setActivities(prev => {
+    ydoc.transact(() => {
+      const yactivities = ymap.get('activities') as Y.Array<Y.Map<any>>;
+      if (!yactivities) return;
+
       const idToIndex = new Map(activityIds.map((id, index) => [id, index]));
-      return prev.map(a => {
-        if (a.assignedDate === date && a.slot === slot && idToIndex.has(a.id)) {
-          return { ...a, position: idToIndex.get(a.id)! };
+      yactivities.forEach(ya => {
+        const id = ya.get('id');
+        if (ya.get('assignedDate') === date && ya.get('slot') === slot && idToIndex.has(id)) {
+          ya.set('position', idToIndex.get(id)!);
         }
-        return a;
       });
+    });
+  };
+
+  const setDateRange = (range: DateRange) => {
+    ydoc.transact(() => {
+      let ydateRange = ymap.get('dateRange') as Y.Map<any>;
+      if (!ydateRange) {
+        ydateRange = new Y.Map();
+        ymap.set('dateRange', ydateRange);
+      }
+      Object.entries(range).forEach(([k, v]) => ydateRange.set(k, v));
     });
   };
 
@@ -293,7 +392,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     const timeSlotOrder: TimeSlot[] = ['morning', 'afternoon', 'night'];
     const currentSlotIndex = timeSlotOrder.indexOf(slot);
 
-    return activities
+    return localActivities
       .filter(a => {
         if (!a.assignedDate || !a.slot) return false;
 
@@ -341,7 +440,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
   };
 
   const getUnassignedActivities = (): Activity[] => {
-    return activities
+    return localActivities
       .filter(a => a.assignedDate === null || a.slot === null)
       .sort((a, b) => (a.position || 0) - (b.position || 0));
   };
@@ -349,9 +448,9 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
   return (
     <HolidayContext.Provider
       value={{
-        activities,
-        categories,
-        dateRange,
+        activities: localActivities,
+        categories: localCategories,
+        dateRange: localDateRange,
         addActivity,
         updateActivity,
         deleteActivity,
@@ -359,8 +458,8 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
         updateCategory,
         deleteCategory,
         setDateRange,
-        setActivities,
-        setCategories,
+        setActivities: () => {},
+        setCategories: () => {},
         reorderActivities,
         reorderAssignedActivities,
         importState,
