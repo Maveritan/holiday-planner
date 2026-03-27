@@ -5,6 +5,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { ActivityPool } from './ActivityPool';
+import { SyncStatus } from './SyncStatus';
 import { CustomDragLayer } from './CustomDragLayer';
 import { DateRangePicker } from './DateRangePicker';
 import { SettingsDialog } from './SettingsDialog';
@@ -104,6 +105,7 @@ export function Layout() {
       options={isMobile ? { enableMouseEvents: true, delayTouchStart: 150 } : undefined}
     >
       {isMobile && <CustomDragLayer />}
+      <SyncStatus />
       <div className="h-screen flex flex-col bg-gray-100">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-gray-200 shrink-0">

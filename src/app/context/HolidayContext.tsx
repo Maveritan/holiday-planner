@@ -58,6 +58,8 @@ interface HolidayContextType {
   activities: Activity[];
   categories: Category[];
   dateRange: DateRange;
+  isInitialSyncDone: boolean;
+  isConnected: boolean;
   addActivity: (name: string, categoryId: string) => void;
   updateActivity: (id: string, updates: Partial<Activity>) => void;
   deleteActivity: (id: string) => void;
@@ -90,7 +92,8 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
   const [localActivities, setLocalActivities] = useState<Activity[]>([]);
   const [localCategories, setLocalCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [localDateRange, setLocalDateRange] = useState<DateRange>(getDefaultDateRange());
-  const isInitialSyncDone = useRef(false);
+  const [isInitialSyncDone, setIsInitialSyncDone] = useState(false);
+  const [isConnected, setIsConnected] = useState(socket.connected);
 
   // Sync with WebSocket and Yjs
   useEffect(() => {
@@ -98,6 +101,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     
     const onConnect = () => {
       console.log('Socket: Connected successfully');
+      setIsConnected(true);
       toast.success('Connected to backend');
       // On reconnect, we might want to sync again if we missed updates
       // The server will send 'yjs-update' on connection anyway
@@ -105,11 +109,13 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
 
     const onConnectError = (error: any) => {
       console.error('Socket: Connection error:', error);
+      setIsConnected(false);
       toast.error(`Backend connection error: ${error.message}`);
     };
 
     const onDisconnect = (reason: string) => {
       console.warn('Socket: Disconnected:', reason);
+      setIsConnected(false);
       if (reason === 'io server disconnect') {
         socket.connect();
       }
@@ -119,7 +125,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       console.log('Socket: Received Yjs update');
       try {
         Y.applyUpdate(ydoc, new Uint8Array(update), socket);
-        isInitialSyncDone.current = true;
+        setIsInitialSyncDone(true);
       } catch (err) {
         console.error('Error applying Yjs update from server:', err);
       }
@@ -451,6 +457,8 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
         activities: localActivities,
         categories: localCategories,
         dateRange: localDateRange,
+        isInitialSyncDone,
+        isConnected,
         addActivity,
         updateActivity,
         deleteActivity,
