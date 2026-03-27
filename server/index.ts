@@ -14,8 +14,18 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3001;
 const APP_ENV = process.env.APP_ENV || 'development';
 const IS_PROD = APP_ENV === 'production';
-const DATA_FILE = path.join(__dirname, 'data', 'state.json');
-const YDOC_FILE = path.join(__dirname, 'data', 'state.ydoc');
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'state.json');
+const YDOC_FILE = path.join(DATA_DIR, 'state.ydoc');
+
+// Ensure the data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+console.log(`Using data directory: ${DATA_DIR}`);
+console.log(`JSON Data file: ${DATA_FILE}`);
+console.log(`YDOC Data file: ${YDOC_FILE}`);
 
 // SSL certificates
 const certPath = path.join(__dirname, '..', 'certs', 'cert.pem');
