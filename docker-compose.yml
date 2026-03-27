@@ -7,6 +7,8 @@ services:
       - ./server/data:/app/server/data
       - ./certs:/app/certs
     restart: unless-stopped
+    ports:
+      - "3001:3001"
     environment:
       - PORT=3001
       - APP_ENV=${APP_ENV:-development}
@@ -20,7 +22,7 @@ services:
         - VITE_AUTH0_CLIENT_ID=${VITE_AUTH0_CLIENT_ID}
         - VITE_APP_ENV=${APP_ENV:-development}
         # Leave blank to use window.location.origin by default in the app
-        - VITE_SOCKET_URL=
+        - VITE_SOCKET_URL=${VITE_SOCKET_URL}
     ports:
       - "8080:80"
     depends_on:
