@@ -21,11 +21,7 @@ const ProtectedLayout = withAuthenticationRequired(Layout, {
         React.createElement('p', { className: "text-gray-600 font-medium" }, "Authenticating..."),
         !IS_PROD && React.createElement('div', { className: "mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800" },
           React.createElement('p', { className: "font-bold mb-1" }, "Stuck on this screen?"),
-          React.createElement('p', null, "Self-signed certificates can cause issues with Auth0."),
-          React.createElement('ul', { className: "list-disc list-inside text-left mt-1 space-y-1" },
-            React.createElement('li', null, React.createElement('a', { href: window.location.origin + "/socket.io/", target: "_blank", className: "underline font-bold" }, "Accept the backend certificate (Open in new tab, then refresh)")),
-            React.createElement('li', null, "Ensure you've updated the Auth0 Dashboard with your IP/hostname if not using localhost")
-          )
+          React.createElement('p', null, "Ensure you've updated the Auth0 Dashboard with your IP/hostname if not using localhost")
         )
       )
     );

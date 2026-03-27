@@ -2,11 +2,9 @@
 
 Build an itinerary — quickly.
 
-## Running with Docker (HTTPS Enabled)
+## Running with Docker
 
-1. **Prerequisite**: Ensure you have generated SSL certificates in the `certs/` directory (see [SSL Setup](#ssl-setup)).
-
-2. **Auth0 Configuration**:
+1. **Auth0 Configuration**:
    Create a `.env` file with your Auth0 credentials:
    ```env
    VITE_AUTH0_DOMAIN=your-domain.auth0.com
@@ -14,34 +12,30 @@ Build an itinerary — quickly.
    # VITE_SOCKET_URL is optional, defaults to window.location.origin
    ```
 
-3. **IMPORTANT: Fix "Callback URL Mismatch"**:
-   Log in to your [Auth0 Dashboard](https://manage.auth0.com/), go to your Application, and update the following fields to use `https`:
-   - **Allowed Callback URLs**: https://localhost:8080`
-   - **Allowed Logout URLs**: https://localhost:8080`
-   - **Allowed Web Origins**: https://localhost:8080`
+2. **IMPORTANT: Fix "Callback URL Mismatch"**:
+   Log in to your [Auth0 Dashboard](https://manage.auth0.com/), go to your Application, and update the following fields (add `https` if you're behind an SSL proxy):
+   - **Allowed Callback URLs**: `https://localhost:8080` (or `http://localhost:8080` if not using SSL)
+   - **Allowed Logout URLs**: `https://localhost:8080`
+   - **Allowed Web Origins**: `https://localhost:8080`
 
-4. **Run the application**:
+3. **Run the application**:
    ```bash
    docker compose up --build
    ```
 
-5. **Access the App**:
-   - On the host machine: Open `https://localhost:8080`.
-   - On other devices: Open `https://<YOUR_HOST_IP>:8080` (Replace `<YOUR_HOST_IP>` with your computer's local IP address).
+4. **Access the App**:
+   - On the host machine: Open `http://localhost:8080` (or `https://localhost:8080` if using an external SSL proxy).
+   - On other devices: Open `http://<YOUR_HOST_IP>:8080`.
 
-## SSL Setup
+## SSL and Architecture
 
-The application uses self-signed certificates for local development.
+The frontend container is configured as a standard HTTP server that can be placed behind an edge proxy (like Railway, Nginx Proxy Manager, or Traefik) which handles SSL.
 
-1. **Generate Certificates**:
-   ```bash
-   mkdir -p certs
-   openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
-   ```
+### Backend SSL (Internal)
+The backend service (internal to the Docker network) still uses self-signed certificates in `development` mode to ensure secure communication between the Nginx proxy and the Node.js server. 
 
-2. **Accept Certificate in Browser**:
-   Since these are self-signed, you will see a security warning.
-   - For the main app: Click "Advanced" -> "Proceed to localhost (unsafe)" or "Proceed to <IP> (unsafe)".
-   - For the backend (Socket.IO): Visit `https://<DOMAIN_OR_IP>:8080/socket.io/` directly once, and click "Proceed anyway". Then refresh the main app page.
-
-**Note for Other Devices**: When connecting from another device, your browser might be even stricter about self-signed certificates. You **must** visit the `/socket.io/` path on that device first to allow the connection.
+If you are seeing connection issues, ensure you've generated the certificates:
+```bash
+mkdir -p certs
+openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
+```

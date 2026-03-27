@@ -23,8 +23,6 @@ services:
         - VITE_SOCKET_URL=
     ports:
       - "8080:80"
-    volumes:
-      - ./certs:/etc/nginx/certs
     depends_on:
       - backend
     restart: unless-stopped
