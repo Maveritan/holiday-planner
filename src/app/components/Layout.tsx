@@ -1,11 +1,13 @@
 import React from 'react';
 import { Outlet, NavLink } from 'react-router';
+import { useAuth0 } from '@auth0/auth0-react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ActivityPool } from './ActivityPool';
 import { DateRangePicker } from './DateRangePicker';
 import { SettingsDialog } from './SettingsDialog';
-import { LayoutGrid, Calendar, Clock, FileText } from 'lucide-react';
+import { AuthNav } from './AuthNav';
+import { LayoutGrid, Calendar, Clock, FileText, Loader2 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/calendar', label: 'Calendar', icon: Calendar },
@@ -14,6 +16,55 @@ const NAV_ITEMS = [
 ];
 
 export function Layout() {
+  const { isLoading, error } = useAuth0();
+  const [showAnyway, setShowAnyway] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setShowAnyway(true), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
+
+  if (error) {
+    return (
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-red-50 p-4">
+        <h2 className="text-xl font-bold text-red-600 mb-2">Authentication Error</h2>
+        <p className="text-gray-700">{error.message}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  if (isLoading && !showAnyway) {
+    const IS_PROD = import.meta.env.VITE_APP_ENV === 'production';
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-gray-100">
+        <div className="flex flex-col items-center gap-4 max-w-md text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+          <p className="text-gray-600 font-medium">Loading Holiday Planner...</p>
+          {!IS_PROD && (
+            <div className="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+              <p className="font-bold mb-1">Stuck on this screen?</p>
+              <p>Using self-signed certificates for HTTPS can sometimes block Auth0 callbacks.</p>
+              <p className="mt-2">Try these steps:</p>
+              <ul className="list-disc list-inside text-left mt-1 space-y-1">
+                <li>Open <a href="/socket.io/" target="_blank" className="underline font-bold">https://localhost:8080/socket.io/</a> and click "Proceed anyway" (This is crucial for the real-time sync to work)</li>
+                <li>Refresh this page</li>
+                <li>Clear your browser cookies for localhost</li>
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="h-screen flex flex-col bg-gray-100">
@@ -25,6 +76,7 @@ export function Layout() {
               <div className="flex items-center gap-4">
                 <DateRangePicker />
                 <SettingsDialog />
+                <AuthNav />
               </div>
             </div>
           </div>

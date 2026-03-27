@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { Activity, Category, DateRange, HolidayData, TimeSlot } from '../types';
+import { socket } from '../services/socket';
+import { toast } from 'sonner';
 import { 
   Plane, 
   ShoppingBag, 
@@ -86,30 +88,75 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [dateRange, setDateRange] = useState<DateRange>(getDefaultDateRange());
+  const isInternalUpdate = useRef(false);
+  const isInitialSyncDone = useRef(false);
 
-  // Load from localStorage on mount
+  // Sync with WebSocket
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        const data: HolidayData = JSON.parse(stored);
-        setActivities(data.activities || []);
-        setCategories(data.categories || DEFAULT_CATEGORIES);
-        setDateRange(data.dateRange || getDefaultDateRange());
-      } catch (e) {
-        console.error('Failed to load data from localStorage', e);
+    console.log('Socket: Initializing connection listeners');
+    
+    const onConnect = () => {
+      console.log('Socket: Connected successfully');
+      toast.success('Connected to backend');
+    };
+
+    const onConnectError = (error: any) => {
+      console.error('Socket: Connection error:', error);
+      toast.error(`Backend connection error: ${error.message}`);
+    };
+
+    const onDisconnect = (reason: string) => {
+      console.warn('Socket: Disconnected:', reason);
+      if (reason === 'io server disconnect') {
+        socket.connect();
       }
+    };
+
+    const handleStateUpdate = (newState: HolidayData) => {
+      console.log('Socket: Received state update', newState);
+      isInternalUpdate.current = true;
+      isInitialSyncDone.current = true;
+      setActivities(newState.activities || []);
+      setCategories(newState.categories || DEFAULT_CATEGORIES);
+      setDateRange(newState.dateRange || getDefaultDateRange());
+      setTimeout(() => {
+        isInternalUpdate.current = false;
+      }, 0);
+    };
+
+    socket.on('connect', onConnect);
+    socket.on('connect_error', onConnectError);
+    socket.on('disconnect', onDisconnect);
+    socket.on('state-update', handleStateUpdate);
+
+    // If already connected when effect runs
+    if (socket.connected) {
+      onConnect();
     }
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('connect_error', onConnectError);
+      socket.off('disconnect', onDisconnect);
+      socket.off('state-update', handleStateUpdate);
+    };
   }, []);
 
-  // Save to localStorage whenever data changes
+  // Broadcast changes
   useEffect(() => {
+    if (isInternalUpdate.current || !isInitialSyncDone.current) {
+      console.log('Socket: Skipping broadcast (internal update or initial sync not done)');
+      return;
+    }
+
     const data: HolidayData = {
       activities,
       categories,
       dateRange,
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    
+    console.log('Socket: Broadcasting state update', data);
+    socket.emit('update-state', data);
   }, [activities, categories, dateRange]);
 
   const importState = (data: HolidayData) => {

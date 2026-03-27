@@ -1,0 +1,17 @@
+# .dockerignore for holiday-planner
+
+node_modules
+dist
+server/data/*.json
+.env
+.git
+.gitignore
+README.md
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.idea
+.junie
+test_output.txt
+package-lock.json

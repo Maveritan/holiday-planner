@@ -1,0 +1,118 @@
+import express from 'express';
+import { createServer } from 'https';
+import { Server } from 'socket.io';
+import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PORT = process.env.PORT || 3001;
+const APP_ENV = process.env.APP_ENV || 'development';
+const IS_PROD = APP_ENV === 'production';
+const DATA_FILE = path.join(__dirname, 'data', 'state.json');
+
+// SSL certificates
+const options = {
+  key: fs.readFileSync(path.join(__dirname, '..', 'certs', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, '..', 'certs', 'cert.pem'))
+};
+
+const app = express();
+app.use(cors({
+  origin: IS_PROD ? false : '*', // Disable wildcard CORS in production
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
+const httpServer = createServer(options, app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: IS_PROD ? false : '*',
+    methods: ['GET', 'POST'],
+    credentials: true
+  },
+  allowEIO3: !IS_PROD, // Compatibility only for development
+  transports: ['websocket', 'polling']
+});
+
+// Initial state
+const DEFAULT_CATEGORIES = [
+  { id: '1', name: 'Transit', color: '#3B82F6', icon: 'Plane' },
+  { id: '2', name: 'Shopping', color: '#EC4899', icon: 'ShoppingBag' },
+  { id: '3', name: 'Museum', color: '#8B5CF6', icon: 'Building2' },
+  { id: '4', name: 'Dining', color: '#F59E0B', icon: 'Utensils' },
+  { id: '5', name: 'Accommodation', color: '#10B981', icon: 'Hotel' },
+  { id: '6', name: 'Sightseeing', color: '#06B6D4', icon: 'Camera' },
+  { id: '7', name: 'Activity', color: '#EF4444', icon: 'MapPin' },
+  { id: '8', name: 'Entertainment', color: '#F97316', icon: 'Sparkles' },
+];
+
+const formatDateToISO = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const getDefaultDateRange = () => {
+  const start = new Date();
+  const end = new Date();
+  end.setDate(end.getDate() + 6);
+  return {
+    start: formatDateToISO(start),
+    end: formatDateToISO(end),
+  };
+};
+
+let state = {
+  activities: [],
+  categories: DEFAULT_CATEGORIES,
+  dateRange: getDefaultDateRange()
+};
+
+// Load state from file
+if (fs.existsSync(DATA_FILE)) {
+  try {
+    const data = fs.readFileSync(DATA_FILE, 'utf-8');
+    state = JSON.parse(data);
+    console.log('State loaded from file');
+  } catch (err) {
+    console.error('Error loading state:', err);
+  }
+}
+
+const saveState = () => {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(state, null, 2));
+  } catch (err) {
+    console.error('Error saving state:', err);
+  }
+};
+
+io.on('connection', (socket) => {
+  console.log('Client connected:', socket.id);
+
+  // Send current state to newly connected client
+  socket.emit('state-update', state);
+
+  socket.on('update-state', (newState) => {
+    state = newState;
+    saveState();
+    // Broadcast to everyone else
+    socket.broadcast.emit('state-update', state);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
+  });
+});
+
+httpServer.listen(PORT, () => {
+  console.log(`Server running in ${APP_ENV} mode on https://localhost:${PORT}`);
+  if (IS_PROD) {
+    console.warn('WARNING: Running in production mode with self-signed certificates. Ensure these are replaced with trusted certificates for actual production use.');
+  }
+});

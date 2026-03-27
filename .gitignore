@@ -1,2 +1,8 @@
 /node_modules/
 /.idea/
+.env
+server/data/state.json
+/certs/
+/.junie/
+/.agents/
+/skills-lock.json

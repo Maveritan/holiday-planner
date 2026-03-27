@@ -1,0 +1,26 @@
+# Dockerfile for backend server
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json ./
+
+# Install all dependencies (we need ts-node/nodemon if running dev-like or we compile)
+# Install all dependencies
+RUN npm install
+
+# Copy source code and ensure permissions
+COPY --chown=node:node . .
+
+# Ensure data directory exists and has correct permissions
+RUN mkdir -p server/data && chown -R node:node server/data
+
+# Use non-root user
+USER node
+
+# Expose port
+EXPOSE 3001
+
+# Run the server using the existing script
+CMD ["npm", "run", "server"]
