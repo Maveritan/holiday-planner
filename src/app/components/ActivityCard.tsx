@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDrag } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import { Resizable } from 're-resizable';
 import ReactMarkdown from 'react-markdown';
 import { Activity, Category, TimeSlot } from '../types';
@@ -7,6 +8,7 @@ import { ICON_MAP } from '../context/HolidayContext';
 import { X } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 import { EditActivityDialog } from './EditActivityDialog';
+import { useIsMobile } from './ui/use-mobile';
 
 interface ActivityCardProps {
   activity: Activity;
@@ -49,7 +51,8 @@ export function ActivityCard({
   style,
   showNotes = false,
 }: ActivityCardProps) {
-  const [{ isDragging }, drag] = useDrag(
+  const isMobile = useIsMobile();
+  const [{ isDragging }, drag, preview] = useDrag(
     () => ({
       type: 'activity',
       item: { activityId: activity.id, index },
@@ -60,6 +63,12 @@ export function ActivityCard({
     }),
     [activity.id, isDraggable, index]
   );
+
+  useEffect(() => {
+    if (isMobile) {
+      preview(getEmptyImage(), { captureDraggingState: true });
+    }
+  }, [isMobile, preview]);
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [resizeSize, setResizeSize] = useState<{ width: number | string, height: number | string }>({ width: '100%', height: '100%' });
@@ -101,7 +110,8 @@ export function ActivityCard({
         relative p-2 min-h-[56px] h-full
         shadow-sm border-2 transition-all
         ${isDragging ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}
-        ${isDraggable ? 'cursor-move touch-none active:scale-105 active:shadow-lg active:z-50' : ''}
+        ${isDraggable ? 'cursor-move touch-none' : ''}
+        ${isDraggable && !isMobile ? 'active:scale-105 active:shadow-lg active:z-50' : ''}
         ${isContinuing ? (resizeDirection === 'vertical' ? 'rounded-t-none border-t-0' : 'rounded-l-none border-l-0') : (resizeDirection === 'vertical' ? 'rounded-t-lg' : 'rounded-l-lg')}
         ${willContinue ? (resizeDirection === 'vertical' ? 'rounded-b-none border-b-0' : 'rounded-r-none border-r-0') : (resizeDirection === 'vertical' ? 'rounded-b-lg' : 'rounded-r-lg')}
         ${className}
