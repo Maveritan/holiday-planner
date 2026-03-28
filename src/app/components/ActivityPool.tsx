@@ -107,7 +107,7 @@ export function ActivityPool() {
         </form>
       )}
 
-      <div className={`flex-1 overflow-y-auto space-y-2 ${isMobile ? 'flex flex-row space-y-0 space-x-2 overflow-x-auto pb-2 scrollbar-hide' : ''}`}>
+      <div className={`flex-1 overflow-y-auto space-y-2 ${isMobile ? 'flex flex-row space-y-0 space-x-2 overflow-x-auto pb-2 -webkit-overflow-scrolling-touch touch-pan-x' : ''}`}>
         {unassignedActivities.length === 0 ? (
           <div className={`text-center text-gray-400 py-4 md:py-8 ${isMobile ? 'w-full text-xs' : ''}`}>
             No unassigned activities.<br />Click + to add one.
