@@ -26,7 +26,7 @@ export function TimeSlotDropZone({
   const { getActivitiesForSlot, categories, moveActivity, updateActivity } = useHoliday();
   const activities = getActivitiesForSlot(date, slot);
 
-  const [{ isOver, canDrop }, drop] = useDrop(
+  const [{ isOver, canDrop, isDragging }, drop] = useDrop(
     () => ({
       accept: 'activity',
       drop: (item: { activityId: string }) => {
@@ -36,9 +36,10 @@ export function TimeSlotDropZone({
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
+        isDragging: !!monitor.getItem(), // Check if any item is being dragged
       }),
     }),
-    [date, slot, activities.length]
+    [date, slot, activities.length, moveActivity]
   );
 
   const handleUnassign = (activityId: string) => {
@@ -56,7 +57,7 @@ export function TimeSlotDropZone({
       ref={drop}
       data-testid="drop-zone"
       className={`
-        min-h-[80px] p-2 rounded-lg transition-all h-full w-full
+        min-h-[80px] p-2 rounded-lg transition-all h-full w-full relative
         ${isOver ? 'border-2 border-dashed border-blue-500 bg-blue-50' : (canDrop ? 'border-2 border-dashed border-gray-300 bg-gray-50' : 'border-2 border-transparent')}
         ${className}
       `}
@@ -67,30 +68,39 @@ export function TimeSlotDropZone({
 
       {!hideActivities && (
         <div
-          className="gap-2 flex flex-col"
+          className={`gap-2 flex flex-col ${isDragging ? 'pointer-events-none' : ''}`}
         >
-          {activities.map(activity => {
-            const category = categories.find(c => c.id === activity.categoryId);
-            if (!category) return null;
+          <div className={isDragging ? 'pointer-events-auto' : ''}>
+            {activities.map((activity, index) => {
+              const category = categories.find(c => c.id === activity.categoryId);
+              if (!category) return null;
 
-            return (
-              <ActivityCard
-                key={activity.id}
-                activity={activity}
-                category={category}
-                onDelete={activity.isBase ? () => handleUnassign(activity.id) : undefined}
-                onResize={activity.isBase ? (duration) => handleResize(activity.id, duration) : undefined}
-                isResizable={activity.isBase}
-                resizeDirection={resizeDirection}
-                slotSize={slotSize}
-                className={!activity.isBase ? 'opacity-75 border-dotted' : ''}
-              />
-            );
-          })}
+              return (
+                <ActivityCard
+                  key={activity.id}
+                  activity={activity}
+                  category={category}
+                  onDelete={activity.isBase ? () => handleUnassign(activity.id) : undefined}
+                  onResize={activity.isBase ? (duration) => handleResize(activity.id, duration) : undefined}
+                  isResizable={activity.isBase}
+                  resizeDirection={resizeDirection}
+                  slotSize={slotSize}
+                  index={index}
+                  className={!activity.isBase ? 'opacity-75 border-dotted' : ''}
+                />
+              );
+            })}
+          </div>
+          
+          {isOver && canDrop && (
+            <div className="h-12 border-2 border-dashed border-blue-400 bg-blue-50/50 rounded-lg mb-2 animate-pulse flex items-center justify-center">
+              <span className="text-blue-400 text-xs font-medium">Drop here</span>
+            </div>
+          )}
         </div>
       )}
 
-      {activities.length === 0 && canDrop && (
+      {activities.length === 0 && canDrop && !isOver && (
         <div className="py-4" />
       )}
     </div>

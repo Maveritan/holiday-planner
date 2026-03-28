@@ -102,7 +102,11 @@ export function Layout() {
   return (
     <DndProvider 
       backend={isMobile ? TouchBackend : HTML5Backend}
-      options={isMobile ? { enableMouseEvents: true, delayTouchStart: 150 } : undefined}
+      options={isMobile ? { 
+        enableMouseEvents: true, 
+        delayTouchStart: 200, // Increased delay to allow scrolling to take precedence
+        triggerKind: 'press'  // Specifically wait for a press/hold
+      } : undefined}
     >
       {isMobile && <CustomDragLayer />}
       <SyncStatus />

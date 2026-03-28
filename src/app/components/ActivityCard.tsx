@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useDrag } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import { Resizable } from 're-resizable';
 import ReactMarkdown from 'react-markdown';
 import { Activity, Category, TimeSlot } from '../types';
-import { ICON_MAP } from '../context/HolidayContext';
+import { ICON_MAP, useHoliday } from '../context/HolidayContext';
 import { X } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 import { EditActivityDialog } from './EditActivityDialog';
@@ -52,6 +52,7 @@ export function ActivityCard({
   showNotes = false,
 }: ActivityCardProps) {
   const isMobile = useIsMobile();
+  const { moveActivity } = useHoliday();
   const [{ isDragging }, drag, preview] = useDrag(
     () => ({
       type: 'activity',
@@ -63,6 +64,16 @@ export function ActivityCard({
     }),
     [activity.id, isDraggable, index]
   );
+
+  const [, drop] = useDrop({
+    accept: 'activity',
+    drop: (item: { activityId: string }) => {
+      // If we're dropping onto a card, we want to move the activity to the same slot
+      if (item.activityId !== activity.id) {
+        moveActivity(item.activityId, activity.assignedDate, activity.slot, index);
+      }
+    },
+  }, [activity.id, activity.assignedDate, activity.slot, index, moveActivity]);
 
   useEffect(() => {
     if (isMobile) {
@@ -104,13 +115,13 @@ export function ActivityCard({
 
   const cardContent = (
     <div
-      ref={isDraggable ? drag : null}
+      ref={isDraggable ? (node) => drag(drop(node)) : null}
       onDoubleClick={() => setIsEditDialogOpen(true)}
       className={`
         relative p-2 min-h-[56px] h-full
         shadow-sm border-2 transition-all
         ${isDragging ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}
-        ${isDraggable ? 'cursor-move touch-none' : ''}
+        ${isDraggable ? 'cursor-move select-none' : ''}
         ${isDraggable && !isMobile ? 'active:scale-105 active:shadow-lg active:z-50' : ''}
         ${isContinuing ? (resizeDirection === 'vertical' ? 'rounded-t-none border-t-0' : 'rounded-l-none border-l-0') : (resizeDirection === 'vertical' ? 'rounded-t-lg' : 'rounded-l-lg')}
         ${willContinue ? (resizeDirection === 'vertical' ? 'rounded-b-none border-b-0' : 'rounded-r-none border-r-0') : (resizeDirection === 'vertical' ? 'rounded-b-lg' : 'rounded-r-lg')}

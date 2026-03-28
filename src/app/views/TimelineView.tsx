@@ -94,11 +94,10 @@ export function TimelineView() {
                 {isMorning && (
                   <div 
                     key={`date-${row.id}`}
-                    className={`flex items-start justify-end pr-2 md:pr-4 z-10 border-b-4 border-gray-400 sticky top-0 bg-gray-50 pt-3`}
+                    className={`flex items-start justify-end pr-2 md:pr-4 z-10 border-b-4 border-gray-400 sticky top-0 bg-gray-50 pt-3 self-stretch`}
                     style={{ 
                       gridRow: `${rowIndex + 1} / span 3`, 
                       gridColumn: 1,
-                      minHeight: currentSlotHeight * 3,
                     }}
                   >
                     <div className="text-right whitespace-nowrap">
@@ -129,7 +128,7 @@ export function TimelineView() {
                 <div 
                   key={`divider-${row.id}`}
                   className={`border-b h-0 ${row.slot === 'night' ? 'border-gray-400 border-b-4' : 'border-gray-200'}`}
-                  style={{ gridRow: rowIndex + 1, gridColumn: '1 / -1', pointerEvents: 'none', alignSelf: 'end', position: 'relative', zIndex: 5 }}
+                  style={{ gridRow: rowIndex + 1, gridColumn: '1 / -1', pointerEvents: 'none', alignSelf: 'end', position: 'relative', zIndex: 15 }}
                 />
                 
                 <TimelineDropZone
