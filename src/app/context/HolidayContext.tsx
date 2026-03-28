@@ -121,13 +121,30 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    const handleYjsUpdate = (update: ArrayBuffer) => {
+    const handleYjsUpdate = (update: any) => {
       console.log('Socket: Received Yjs update');
       try {
-        Y.applyUpdate(ydoc, new Uint8Array(update), socket);
+        // Ensure we are working with a Uint8Array
+        const uint8Update = update instanceof Uint8Array ? update : new Uint8Array(update);
+        Y.applyUpdate(ydoc, uint8Update, socket);
         setIsInitialSyncDone(true);
       } catch (err) {
         console.error('Error applying Yjs update from server:', err);
+      }
+    };
+
+    const handleYjsUpdateBase64 = (base64Update: string) => {
+      console.log('Socket: Received Yjs update (Base64)');
+      try {
+        const binaryString = atob(base64Update);
+        const uint8Update = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          uint8Update[i] = binaryString.charCodeAt(i);
+        }
+        Y.applyUpdate(ydoc, uint8Update, socket);
+        setIsInitialSyncDone(true);
+      } catch (err) {
+        console.error('Error applying Yjs update (Base64) from server:', err);
       }
     };
 
@@ -135,12 +152,22 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     socket.on('connect_error', onConnectError);
     socket.on('disconnect', onDisconnect);
     socket.on('yjs-update', handleYjsUpdate);
+    socket.on('yjs-update-base64', handleYjsUpdateBase64);
 
     // Initial Yjs sync: when we update the local ydoc, broadcast it
     const handleLocalYjsUpdate = (update: Uint8Array, origin: any) => {
       if (origin !== socket) {
         console.log('Socket: Broadcasting local Yjs update');
+        // Send both binary and base64 for maximum compatibility
         socket.emit('yjs-update', update);
+        
+        try {
+          // Also send base64 as a fallback for browsers like Safari
+          const base64Update = btoa(String.fromCharCode(...update));
+          socket.emit('yjs-update-base64', base64Update);
+        } catch (e) {
+          console.error('Error encoding update to base64:', e);
+        }
       }
     };
     ydoc.on('update', handleLocalYjsUpdate);
@@ -176,6 +203,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       socket.off('connect_error', onConnectError);
       socket.off('disconnect', onDisconnect);
       socket.off('yjs-update', handleYjsUpdate);
+      socket.off('yjs-update-base64', handleYjsUpdateBase64);
       ydoc.off('update', handleLocalYjsUpdate);
       ymap.unobserveDeep(observer);
     };

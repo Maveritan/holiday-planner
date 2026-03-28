@@ -73,7 +73,8 @@ const io = new Server(httpServer, {
     credentials: true
   },
   allowEIO3: !IS_PROD,
-  transports: ['websocket', 'polling']
+  transports: ['websocket', 'polling'],
+  maxHttpBufferSize: 1e8, // 100MB
 });
 
 // Initial state
@@ -185,14 +186,32 @@ io.on('connection', (socket) => {
   // Send current state to newly connected client as a Yjs update
   const stateUpdate = Y.encodeStateAsUpdate(ydoc);
   socket.emit('yjs-update', stateUpdate);
+  try {
+    const base64Update = Buffer.from(stateUpdate).toString('base64');
+    socket.emit('yjs-update-base64', base64Update);
+  } catch (e) {
+    console.error('Error encoding state update to base64:', e);
+  }
 
-  socket.on('yjs-update', (update: Uint8Array) => {
+  socket.on('yjs-update', (update: any) => {
     try {
-      Y.applyUpdate(ydoc, new Uint8Array(update), socket);
+      const uint8Update = update instanceof Uint8Array ? update : new Uint8Array(update);
+      Y.applyUpdate(ydoc, uint8Update, socket);
       // Broadcast to everyone else
-      socket.broadcast.emit('yjs-update', update);
+      socket.broadcast.emit('yjs-update', uint8Update);
     } catch (err) {
       console.error('Error applying Yjs update:', err);
+    }
+  });
+
+  socket.on('yjs-update-base64', (base64Update: string) => {
+    try {
+      const update = new Uint8Array(Buffer.from(base64Update, 'base64'));
+      Y.applyUpdate(ydoc, update, socket);
+      // Broadcast to everyone else
+      socket.broadcast.emit('yjs-update-base64', base64Update);
+    } catch (err) {
+      console.error('Error applying Yjs update (Base64):', err);
     }
   });
 
