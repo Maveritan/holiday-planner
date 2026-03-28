@@ -198,6 +198,15 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       onConnect();
     }
 
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && !socket.connected) {
+        console.log('App became visible, attempting to reconnect socket...');
+        socket.connect();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
       socket.off('connect', onConnect);
       socket.off('connect_error', onConnectError);
@@ -206,6 +215,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       socket.off('yjs-update-base64', handleYjsUpdateBase64);
       ydoc.off('update', handleLocalYjsUpdate);
       ymap.unobserveDeep(observer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 

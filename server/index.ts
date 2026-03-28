@@ -73,7 +73,11 @@ const io = new Server(httpServer, {
     credentials: true
   },
   allowEIO3: !IS_PROD,
-  transports: ['websocket', 'polling'],
+  // START with polling for stability, then upgrade to websocket
+  transports: ['polling', 'websocket'],
+  allowUpgrades: true,
+  pingTimeout: 60000,   // Increase timeout for mobile Safari backgrounding
+  pingInterval: 25000,
   maxHttpBufferSize: 1e8, // 100MB
 });
 
