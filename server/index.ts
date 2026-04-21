@@ -46,7 +46,8 @@ app.use(cors({
   origin: (origin, callback) => {
     // In production, allow the request if it's from the same domain or if origin is undefined (e.g. server-to-server)
     // For Railway, we can be a bit more permissive or use an environment variable
-    if (!IS_PROD || !origin || origin.includes('railway.app') || origin.includes('localhost')) {
+    const allowedOrigin = process.env.ALLOWED_ORIGIN;
+    if (!IS_PROD || !origin || origin.includes('railway.app') || origin.includes('localhost') || (allowedOrigin && origin.includes(allowedOrigin))) {
       callback(null, true);
       return;
     }
