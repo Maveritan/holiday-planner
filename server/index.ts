@@ -64,7 +64,8 @@ const httpServer = useHttps
 const io = new Server(httpServer, {
   cors: {
     origin: (origin, callback) => {
-      if (!IS_PROD || !origin || origin.includes('railway.app') || origin.includes('localhost')) {
+      const allowedOrigin = process.env.ALLOWED_ORIGIN;
+      if (!IS_PROD || !origin || origin.includes('railway.app') || origin.includes('localhost')|| (allowedOrigin && origin.includes(allowedOrigin))) {
         callback(null, true);
         return;
       }
