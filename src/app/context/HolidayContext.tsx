@@ -432,18 +432,27 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const getActivitiesForSlot = (date: string, slot: TimeSlot): (Activity & { offset: number; isBase: boolean; isLast: boolean })[] => {
+  const getActivitiesForSlot = React.useCallback((date: string, slot: TimeSlot): (Activity & { offset: number; isBase: boolean; isLast: boolean })[] => {
     const timeSlotOrder: TimeSlot[] = ['morning', 'afternoon', 'night'];
     const currentSlotIndex = timeSlotOrder.indexOf(slot);
 
-    return localActivities
+    return (localActivities || [])
       .filter(a => {
-        if (!a.assignedDate || !a.slot) return false;
+        if (!a || !a.assignedDate || !a.slot) return false;
 
         const activityDate = new Date(a.assignedDate);
         activityDate.setHours(0, 0, 0, 0);
+        // Normalize the input date string to midnight for comparison
         const currentMidnight = new Date(date);
-        currentMidnight.setHours(0, 0, 0, 0);
+        if (date.includes('T')) {
+           currentMidnight.setHours(0, 0, 0, 0);
+        } else {
+           // If it's just YYYY-MM-DD, some browsers might parse it as UTC, others local.
+           // We want to be consistent. Let's force it to local midnight.
+           const [year, month, day] = date.split('-').map(Number);
+           currentMidnight.setFullYear(year, month - 1, day);
+           currentMidnight.setHours(0, 0, 0, 0);
+        }
 
         const activitySlotIndex = timeSlotOrder.indexOf(a.slot);
 
@@ -457,7 +466,13 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
         const activityDate = new Date(a.assignedDate!);
         activityDate.setHours(0, 0, 0, 0);
         const currentMidnight = new Date(date);
-        currentMidnight.setHours(0, 0, 0, 0);
+        if (date.includes('T')) {
+           currentMidnight.setHours(0, 0, 0, 0);
+        } else {
+           const [year, month, day] = date.split('-').map(Number);
+           currentMidnight.setFullYear(year, month - 1, day);
+           currentMidnight.setHours(0, 0, 0, 0);
+        }
         const activitySlotIndex = timeSlotOrder.indexOf(a.slot!);
         const daysDiff = Math.round((currentMidnight.getTime() - activityDate.getTime()) / (1000 * 60 * 60 * 24));
         const offset = (daysDiff * 3) + (currentSlotIndex - activitySlotIndex);
@@ -481,7 +496,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
         // Finally sort by their assigned positions
         return a.position - b.position;
       });
-  };
+  }, [localActivities]);
 
   const getUnassignedActivities = (): Activity[] => {
     return localActivities
