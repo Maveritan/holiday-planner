@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, NavLink } from 'react-router';
+import { Outlet, NavLink, useLocation } from 'react-router';
 import { useAuth0 } from '@auth0/auth0-react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -25,6 +25,8 @@ export function Layout() {
   const { isLoading, error } = useAuth0();
   const [showAnyway, setShowAnyway] = React.useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+  const isItinerary = location.pathname === '/itinerary';
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -156,13 +158,13 @@ export function Layout() {
           )}
 
           {/* View Content */}
-          <main className={`flex-1 overflow-hidden flex flex-col ${isMobile ? 'pb-32' : ''}`}>
+          <main className={`flex-1 overflow-hidden flex flex-col ${isMobile && !isItinerary ? 'pb-32' : ''}`}>
             <Outlet />
           </main>
         </div>
 
         {/* Mobile Activity Pool */}
-        {isMobile && (
+        {isMobile && !isItinerary && (
           <div className="fixed bottom-0 left-0 right-0 h-32 z-40">
             <ActivityPool />
           </div>
