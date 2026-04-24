@@ -57,7 +57,7 @@ export function TimeSlotDropZone({
       ref={drop}
       data-testid="drop-zone"
       className={`
-        min-h-[80px] p-2 rounded-lg transition-all h-full w-full relative
+        min-h-[80px] p-2 rounded-lg transition-all w-full relative overflow-visible
         ${isOver ? 'border-2 border-dashed border-blue-500 bg-blue-50' : (canDrop ? 'border-2 border-dashed border-gray-300 bg-gray-50' : 'border-2 border-transparent')}
         ${className}
       `}

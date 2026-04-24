@@ -3,6 +3,7 @@ import { useHoliday, ICON_MAP } from '../context/HolidayContext';
 import { TimeSlot } from '../types';
 import { LucideIcon, Download } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import MarkdownNotes from '../components/MarkdownNotes';
 import { usePDF } from '@react-pdf/renderer';
 import { ItineraryPDF, ItineraryDay } from './ItineraryPDF';
 
@@ -31,30 +32,6 @@ const getPastelColor = (hex: string) => {
     return '#f9fafb';
   }
 };
-
-const MarkdownNotes = memo(({ notes }: { notes: string }) => {
-  // Auto-link plain URLs while preserving existing markdown links and code blocks
-  const urlRegex = /(?<!`)(?<!\()\b(https?:\/\/[^\s,$'")\]}>]+)(?!`)/g;
-
-  const autoLinked = notes.replace(urlRegex, (match) => {
-    // Skip if already inside a markdown link
-    return `[${match}](${match})`;
-  });
-
-  const components: Record<string, any> = {
-    a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
-        <a href={href} className="text-blue-600 underline break-all" target="_blank" rel="noopener noreferrer">
-          {children}
-        </a>
-    ),
-  };
-
-  return (
-      <div className="pro prose-sm max-w-none">
-        <ReactMarkdown components={components}>{autoLinked}</ReactMarkdown>
-      </div>
-  );
-});
 
 type SlotActivity = ReturnType<typeof useHoliday>['activities'][number] & { offset: number; isBase: boolean; isLast: boolean };
 

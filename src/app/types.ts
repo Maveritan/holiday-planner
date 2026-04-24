@@ -27,4 +27,5 @@ export interface HolidayData {
   activities: Activity[];
   categories: Category[];
   dateRange: DateRange;
+  researchContent?: string;
 }

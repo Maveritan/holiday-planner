@@ -10,7 +10,7 @@ import { CustomDragLayer } from './CustomDragLayer';
 import { DateRangePicker } from './DateRangePicker';
 import { SettingsDialog } from './SettingsDialog';
 import { AuthNav } from './AuthNav';
-import { LayoutGrid, Calendar, Clock, FileText, Loader2, Menu } from 'lucide-react';
+import { LayoutGrid, Calendar, Clock, FileText, Loader2, Menu, BookOpen } from 'lucide-react';
 import { useIsMobile } from './ui/use-mobile';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from './ui/sheet';
 import { Button } from './ui/button';
@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { path: '/calendar', label: 'Calendar', icon: Calendar },
   { path: '/timeline', label: 'Timeline', icon: Clock },
   { path: '/itinerary', label: 'Itinerary', icon: FileText },
+  { path: '/research', label: 'Research', icon: BookOpen },
 ];
 
 export function Layout() {
@@ -27,6 +28,8 @@ export function Layout() {
   const isMobile = useIsMobile();
   const location = useLocation();
   const isItinerary = location.pathname === '/itinerary';
+  const isResearch = location.pathname === '/research';
+  const hideActivityDrawer = isItinerary || isResearch;
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -158,13 +161,13 @@ export function Layout() {
           )}
 
           {/* View Content */}
-          <main className={`flex-1 overflow-hidden flex flex-col ${isMobile && !isItinerary ? 'pb-32' : ''}`}>
+          <main className={`flex-1 overflow-hidden flex flex-col ${isMobile && !hideActivityDrawer ? 'pb-32' : ''}`}>
             <Outlet />
           </main>
         </div>
 
         {/* Mobile Activity Pool */}
-        {isMobile && !isItinerary && (
+        {isMobile && !hideActivityDrawer && (
           <div className="fixed bottom-0 left-0 right-0 h-32 z-40">
             <ActivityPool />
           </div>

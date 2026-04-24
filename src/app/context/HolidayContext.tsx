@@ -58,6 +58,7 @@ interface HolidayContextType {
   activities: Activity[];
   categories: Category[];
   dateRange: DateRange;
+  researchContent: string;
   isInitialSyncDone: boolean;
   isConnected: boolean;
   addActivity: (name: string, categoryId: string) => void;
@@ -84,6 +85,7 @@ interface HolidayContextType {
   ) => void;
   getActivitiesForSlot: (date: string, slot: TimeSlot) => (Activity & { offset: number; isBase: boolean; isLast: boolean })[];
   getUnassignedActivities: () => Activity[];
+  updateResearchContent: (text: string) => void;
 }
 
 const HolidayContext = createContext<HolidayContextType | undefined>(undefined);
@@ -92,6 +94,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
   const [localActivities, setLocalActivities] = useState<Activity[]>([]);
   const [localCategories, setLocalCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [localDateRange, setLocalDateRange] = useState<DateRange>(getDefaultDateRange());
+  const [localResearchContent, setLocalResearchContent] = useState<string>('');
   const [isInitialSyncDone, setIsInitialSyncDone] = useState(false);
   const [isConnected, setIsConnected] = useState(socket.connected);
 
@@ -182,6 +185,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       if (data.activities) setLocalActivities(data.activities);
       if (data.categories) setLocalCategories(data.categories);
       if (data.dateRange) setLocalDateRange(data.dateRange);
+      if (data.researchContent) setLocalResearchContent(data.researchContent);
     };
 
     const observer = () => {
@@ -240,6 +244,10 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
       const ydateRange = new Y.Map();
       Object.entries(data.dateRange).forEach(([k, v]) => ydateRange.set(k, v));
       ymap.set('dateRange', ydateRange);
+
+      if (data.researchContent) {
+        ymap.set('researchContent', data.researchContent);
+      }
     });
   };
 
@@ -432,6 +440,12 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const updateResearchContent = (text: string) => {
+    ydoc.transact(() => {
+      ymap.set('researchContent', text);
+    });
+  };
+
   const getActivitiesForSlot = React.useCallback((date: string, slot: TimeSlot): (Activity & { offset: number; isBase: boolean; isLast: boolean })[] => {
     const timeSlotOrder: TimeSlot[] = ['morning', 'afternoon', 'night'];
     const currentSlotIndex = timeSlotOrder.indexOf(slot);
@@ -510,6 +524,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
         activities: localActivities,
         categories: localCategories,
         dateRange: localDateRange,
+        researchContent: localResearchContent,
         isInitialSyncDone,
         isConnected,
         addActivity,
@@ -527,6 +542,7 @@ export function HolidayProvider({ children }: { children: ReactNode }) {
         moveActivity,
         getActivitiesForSlot,
         getUnassignedActivities,
+        updateResearchContent,
       }}
     >
       {children}

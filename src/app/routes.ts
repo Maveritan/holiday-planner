@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { CalendarView } from './views/CalendarView';
 import { TimelineView } from './views/TimelineView';
 import { ItineraryView } from './views/ItineraryView';
+import { ResearchView } from './views/ResearchView';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: 'itinerary',
         Component: ItineraryView,
+      },
+      {
+        path: 'research',
+        Component: ResearchView,
       },
     ],
   },

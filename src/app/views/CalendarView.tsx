@@ -84,7 +84,7 @@ export function CalendarView() {
           const date = new Date(dateStr);
           return (
             <div key={dateStr} className="p-4 pt-0 space-y-3">
-              <div className="sticky top-0 z-20 bg-gray-50/95 backdrop-blur-sm py-2 px-4 -mx-4 flex items-baseline gap-2 border-b border-gray-200">
+              <div className="sticky top-0 z-40 bg-gray-50/95 backdrop-blur-sm py-2 px-4 -mx-4 flex items-baseline gap-2 border-b border-gray-200">
                 <span className="text-xl font-bold text-gray-900">
                   {date.toLocaleDateString('en-US', { day: 'numeric' })}
                 </span>
@@ -95,16 +95,16 @@ export function CalendarView() {
                   {date.toLocaleDateString('en-US', { month: 'short' })}
                 </span>
               </div>
-              <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-6">
                 {TIME_SLOTS.map((slot) => (
-                  <div key={slot} className="space-y-1">
-                    <div className="text-[10px] font-bold text-gray-400 uppercase ml-1">
+                  <div key={slot} className="flex flex-col relative">
+                    <div className="text-[10px] font-bold text-gray-400 uppercase ml-1 relative z-30 bg-gray-50/80 w-fit px-1 rounded mb-1">
                       {slot}
                     </div>
                     <TimeSlotDropZone
                       date={dateStr}
                       slot={slot}
-                      className="min-h-[60px] bg-white shadow-sm border-gray-100"
+                      className="bg-white shadow-md border-gray-100 ring-1 ring-black/5"
                     />
                   </div>
                 ))}
@@ -284,9 +284,6 @@ export function CalendarView() {
                                 index={activityIndex}
                                 className="w-full shadow-sm"
                                 showNotes={true}
-                                style={{
-                                  minHeight: SLOT_HEIGHT + 'px'
-                                }}
                               />
                             </div>
                           );
