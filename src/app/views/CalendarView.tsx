@@ -181,7 +181,7 @@ export function CalendarView() {
               <div 
                 className="grid border border-gray-300 relative"
                 style={{
-                  gridTemplateColumns: `100px repeat(7, minmax(150px, 1fr))`,
+                  gridTemplateColumns: `100px repeat(7, minmax(90px, 1fr))`,
                   gridTemplateRows: `auto repeat(${TIME_SLOTS.length}, minmax(${SLOT_HEIGHT}px, auto))`,
                 }}
               >
