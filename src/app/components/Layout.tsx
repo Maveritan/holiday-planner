@@ -10,16 +10,19 @@ import { CustomDragLayer } from './CustomDragLayer';
 import { DateRangePicker } from './DateRangePicker';
 import { SettingsDialog } from './SettingsDialog';
 import { AuthNav } from './AuthNav';
-import { LayoutGrid, Calendar, Clock, FileText, Loader2, Menu, BookOpen } from 'lucide-react';
+import { Calendar, Clock, FileText, Loader2, Menu, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIsMobile } from './ui/use-mobile';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from './ui/sheet';
 import { Button } from './ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
+import { Separator } from './ui/separator';
+import { cn } from './ui/utils';
 
 const NAV_ITEMS = [
-  { path: '/calendar', label: 'Calendar', icon: Calendar },
-  { path: '/timeline', label: 'Timeline', icon: Clock },
-  { path: '/itinerary', label: 'Itinerary', icon: FileText },
-  { path: '/research', label: 'Research', icon: BookOpen },
+  { path: '/calendar', label: 'Calendar', Icon: Calendar },
+  { path: '/timeline', label: 'Timeline', Icon: Clock },
+  { path: '/itinerary', label: 'Itinerary', Icon: FileText },
+  { path: '/research', label: 'Research', Icon: BookOpen },
 ];
 
 export function Layout() {
@@ -31,6 +34,7 @@ export function Layout() {
   const isResearch = location.pathname === '/research';
   const hideActivityDrawer = isItinerary || isResearch;
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
 
   React.useEffect(() => {
     if (isLoading) {
@@ -73,35 +77,94 @@ export function Layout() {
   }
 
   const SidebarContent = () => (
-    <>
-      {isMobile && (
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50/50">
-          <AuthNav />
-          <SettingsDialog />
+    <TooltipProvider>
+      <nav className={cn(
+        "p-2 space-y-2 flex-none flex flex-col items-stretch",
+        isCollapsed && !isMobile ? "items-center" : "px-4 pt-4"
+      )}>
+        {NAV_ITEMS.map((item) => {
+          const navLink = (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsDrawerOpen(false)}
+              className="block"
+            >
+              {({ isActive }) => (
+                <div className={cn(
+                  "flex items-center gap-3 rounded-lg text-sm font-medium transition-all duration-200",
+                  isCollapsed && !isMobile 
+                    ? "w-11 h-11 justify-center p-0" 
+                    : "px-3 py-2.5 w-full",
+                  isActive 
+                    ? "bg-blue-600 text-white shadow-md" 
+                    : "text-gray-600 hover:bg-gray-200 hover:text-gray-900"
+                )}>
+                  <item.Icon 
+                    className={cn(
+                      "shrink-0 transition-colors duration-200", 
+                      isCollapsed && !isMobile ? "w-6 h-6" : "w-4 h-4", 
+                      isActive ? "text-white" : "text-gray-600"
+                    )} 
+                  />
+                  {(!isCollapsed || isMobile) && <span>{item.label}</span>}
+                </div>
+              )}
+            </NavLink>
+          );
+
+          if (isCollapsed && !isMobile) {
+            return (
+              <Tooltip key={item.path} delayDuration={0}>
+                <TooltipTrigger asChild>
+                  {navLink}
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={10}>
+                  {item.label}
+                </TooltipContent>
+              </Tooltip>
+            );
+          }
+
+          return navLink;
+        })}
+      </nav>
+
+      {(!isCollapsed || isMobile) && (
+        <>
+          <Separator />
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <ActivityPool />
+          </div>
+        </>
+      )}
+
+      {!isMobile && (
+        <div className="mt-auto">
+          <Separator />
+          <div className="p-2 flex justify-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "transition-all duration-200",
+                isCollapsed ? "w-10 h-10 p-0" : "w-full justify-start px-3"
+              )}
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+              {isCollapsed ? (
+                <ChevronRight className="h-5 w-5" />
+              ) : (
+                <>
+                  <ChevronLeft className="h-4 w-4 mr-2" />
+                  <span>Collapse</span>
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       )}
-      <nav className="p-4 border-b border-gray-200 space-y-1">
-        {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            onClick={() => setIsDrawerOpen(false)}
-            className={({ isActive }) => `
-              flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors
-              ${isActive 
-                ? 'bg-blue-50 text-blue-700' 
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}
-            `}
-          >
-            <item.icon className="w-4 h-4" />
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {!isMobile && <ActivityPool />}
-      </div>
-    </>
+    </TooltipProvider>
   );
 
   return (
@@ -155,7 +218,10 @@ export function Layout() {
         <div className="flex-1 flex overflow-hidden">
           {/* Sidebar - Desktop Only */}
           {!isMobile && (
-            <aside className="w-80 bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden">
+            <aside className={cn(
+              "bg-gray-50 border-r border-gray-200 flex flex-col overflow-hidden transition-all duration-300",
+              isCollapsed ? "w-16" : "w-80"
+            )}>
               <SidebarContent />
             </aside>
           )}
